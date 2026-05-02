@@ -5,7 +5,7 @@ WORKDIR /src
 
 COPY gradle ./gradle
 COPY gradlew ./gradlew
-COPY settings.gradle.kts build.gradle.kts gradle.properties ./
+COPY settings.gradle.kts build.gradle.kts ./
 COPY buildSrc ./buildSrc
 COPY AndroidCompat ./AndroidCompat
 COPY server ./server
