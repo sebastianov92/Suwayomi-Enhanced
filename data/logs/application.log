@@ -1,0 +1,656 @@
+2026-05-01 22:37:47.635 [main] INFO  suwayomi.tachidesk.server.ServerSetup - Running Suwayomi-Server v2.1.0
+2026-05-01 22:37:47.792 [main] INFO  suwayomi.tachidesk.server.util.AppMutex - Mutex status is clear, Resuming startup.
+2026-05-01 22:37:47.823 [main] INFO  com.zaxxer.hikari.HikariDataSource - Suwayomi-DB-Pool - Starting...
+2026-05-01 22:37:47.889 [main] INFO  com.zaxxer.hikari.pool.HikariPool - Suwayomi-DB-Pool - Added connection conn0: url=jdbc:h2:/data/database user=
+2026-05-01 22:37:47.889 [main] INFO  com.zaxxer.hikari.HikariDataSource - Suwayomi-DB-Pool - Start completed.
+2026-05-01 22:37:47.905 [main] INFO  suwayomi.tachidesk.server.database.DBManager - Using H2 database version 1.4
+2026-05-01 22:37:47.968 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migrations on database jdbc:h2:/data/database
+2026-05-01 22:37:47.995 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Empty database found, creating table for migrations
+2026-05-01 22:37:48.022 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Database version before migrations: null
+2026-05-01 22:37:48.022 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 1: Initial
+2026-05-01 22:37:48.093 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 2: ChapterTableIndexRename
+2026-05-01 22:37:48.097 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 3: DefaultCategory
+2026-05-01 22:37:48.098 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 4: AnimeTablesBatch1
+2026-05-01 22:37:48.104 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 5: AnimeTablesBatch2
+2026-05-01 22:37:48.107 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 6: AnimeTablesBatch3
+2026-05-01 22:37:48.111 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 7: ChapterIsDownloaded
+2026-05-01 22:37:48.116 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 8: ChapterPageCount
+2026-05-01 22:37:48.120 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 9: ChapterLastReadAt
+2026-05-01 22:37:48.123 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 10: MangaAndChapterMeta
+2026-05-01 22:37:48.130 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 11: SourceDropPartOfFactorySource
+2026-05-01 22:37:48.132 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 12: SourceIsNsfw
+2026-05-01 22:37:48.134 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 13: MangaRealUrl
+2026-05-01 22:37:48.137 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 14: MangaRemoveLengthLimit
+2026-05-01 22:37:48.144 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 15: SourceAndExtensionLangAddLengthLimit
+2026-05-01 22:37:48.147 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 16: ChapterIndexRenameToSourceOrder
+2026-05-01 22:37:48.148 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 17: ChapterFetchedAt
+2026-05-01 22:37:48.150 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 18: MangaInLibraryAt
+2026-05-01 22:37:48.153 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 19: RemoveAnime
+2026-05-01 22:37:48.154 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 20: AddMangaLastFetchedAtColumns
+2026-05-01 22:37:48.159 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 21: GlobalAndCategoryMeta
+2026-05-01 22:37:48.162 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 22: MangaThumbnailLastFetched
+2026-05-01 22:37:48.165 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 23: CategoryMetaRefFix
+2026-05-01 22:37:48.170 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 24: MangaUpdateStrategy
+2026-05-01 22:37:48.172 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 25: ChapterRealUrl
+2026-05-01 22:37:48.175 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 26: CategoryIncludeInUpdate
+2026-05-01 22:37:48.176 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 27: AddDefaultCategory
+2026-05-01 22:37:48.177 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 28: AddCascade
+2026-05-01 22:37:48.181 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 29: DropMangaDefaultCategory
+2026-05-01 22:37:48.183 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 30: FixDateUpload
+2026-05-01 22:37:48.184 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 31: AddExtensionRepo
+2026-05-01 22:37:48.187 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 32: FixExtensionRepos
+2026-05-01 22:37:48.187 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 33: TrackRecord
+2026-05-01 22:37:48.191 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 34: CategoryIncludeInDownload
+2026-05-01 22:37:48.193 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 35: TrackSearch
+2026-05-01 22:37:48.195 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 36: SourceMeta
+2026-05-01 22:37:48.198 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 37: RemoveTrackRecordsOfUnsupportedTrackers
+2026-05-01 22:37:48.199 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 38: RemoveTrackRecordsOfUnsupportedTrackersII
+2026-05-01 22:37:48.199 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 39: DeleteDuplicatedChapters
+2026-05-01 22:37:48.201 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 40: AddUniqueConstraintToChapterTable
+2026-05-01 22:37:48.202 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 41: FixDownloadedChaptersWithoutPageCount
+2026-05-01 22:37:48.203 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 42: MangaRemoveLengthLimit_II
+2026-05-01 22:37:48.206 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 43: PreventNegativeLastPageRead
+2026-05-01 22:37:48.208 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 44: FixDownloadedChaptersWithoutPageCountII
+2026-05-01 22:37:48.209 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 45: PreventDuplicatedChapterPages
+2026-05-01 22:37:48.210 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 46: RenamePageImageUrlColumn
+2026-05-01 22:37:48.211 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 47: ChapterScanlatorIncreaseLength
+2026-05-01 22:37:48.213 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 48: AddTrackingColumns
+2026-05-01 22:37:48.220 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 49: FixDuplicatedMetas
+2026-05-01 22:37:48.222 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 50: FixHandlingOfTooLongPageImageUrls
+2026-05-01 22:37:48.224 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 51: AddKoreaderHashToChapterTable
+2026-05-01 22:37:48.226 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 52: RenameCategoryOrderColumn
+2026-05-01 22:37:48.227 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 53: TrackersFixIds
+2026-05-01 22:37:48.230 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 54: MovePostgresToSuwayomiSchema
+2026-05-01 22:37:48.231 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 55: ScanlatorAlias
+2026-05-01 22:37:48.233 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 56: MangaUserOverride
+2026-05-01 22:37:48.237 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 57: KindleSendQueue
+2026-05-01 22:37:48.240 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migration version 58: MangaKindleConfig
+2026-05-01 22:37:48.244 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Migrations finished successfully
+2026-05-01 22:37:48.256 [main] INFO  Migration - Running migrations, previous version 0, target version 2
+2026-05-01 22:37:48.258 [main] INFO  Migration - Running migration version 1: InitialMigration
+2026-05-01 22:37:48.258 [DefaultDispatcher-worker-4] ERROR dorkbox.systemTray.SystemTray - Cannot use the SystemTray in a headless environment
+2026-05-01 22:37:48.258 [DefaultDispatcher-worker-4] ERROR suwayomi.tachidesk.server.util.SystemTray - create: failed to create SystemTray due to
+java.lang.NullPointerException: Cannot invoke "dorkbox.systemTray.SystemTray.getMenu()" because "systemTray" is null
+	at suwayomi.tachidesk.server.util.SystemTray.create(SystemTray.kt:41)
+	at suwayomi.tachidesk.server.ServerSetupKt$applicationSetup$19.invokeSuspend(ServerSetup.kt:431)
+	at suwayomi.tachidesk.server.ServerSetupKt$applicationSetup$19.invoke(ServerSetup.kt)
+	at suwayomi.tachidesk.server.ServerSetupKt$applicationSetup$19.invoke(ServerSetup.kt)
+	at suwayomi.tachidesk.server.ServerConfig$subscribeTo$2.invokeSuspend(ServerConfig.kt:1202)
+	at suwayomi.tachidesk.server.ServerConfig$subscribeTo$2.invoke(ServerConfig.kt)
+	at suwayomi.tachidesk.server.ServerConfig$subscribeTo$2.invoke(ServerConfig.kt)
+	at kotlinx.coroutines.flow.FlowKt__TransformKt$onEach$$inlined$unsafeTransform$1$2.emit(Emitters.kt:50)
+	at kotlinx.coroutines.flow.SharedFlowImpl.collect$suspendImpl(SharedFlow.kt:397)
+	at kotlinx.coroutines.flow.SharedFlowImpl$collect$1.invokeSuspend(SharedFlow.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:829)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:37:48.266 [main] INFO  Migration - Running migration version 2: FixGlobalUpdateScheduling
+2026-05-01 22:37:48.277 [DefaultDispatcher-worker-8] INFO  suwayomi.tachidesk.server.ServerSetup - Socks Proxy changed - enabled=false address=: , username=[REDACTED], password=[REDACTED]
+2026-05-01 22:37:48.397 [DefaultDispatcher-worker-5] INFO  suwayomi.tachidesk.manga.impl.backup.proto.ProtoBackupExport - Creating automated backup...
+2026-05-01 22:37:48.410 [main] INFO  suwayomi.tachidesk.manga.impl.kindle.KindleSendWorker - Starting Kindle send worker
+2026-05-01 22:37:48.411 [main] INFO  KCEF - KCEF disabled via SUWAYOMI_DISABLE_KCEF=1
+2026-05-01 22:37:48.447 [DefaultDispatcher-worker-6] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager setupWebUI(flavor= WebUI, servedFlavor= WebUI) - no webUI files found, starting download...
+2026-05-01 22:37:48.780 [DefaultDispatcher-worker-5] WARN  io.github.oshai.kotlinlogging.slf4j.internal.LocationAwareKLogger@7f77f6d8 fetchServerMappingFile(WebUI) - (retry 0/3) failed due to
+eu.kanade.tachiyomi.network.HttpException: HTTP error 404
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invokeSuspend(WebInterfaceManager.kt:624)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2.invokeSuspend(WebInterfaceManager.kt:617)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2.invoke(WebInterfaceManager.kt)
+	at io.github.reactivecircus.cache4k.RealCache$get$3.invokeSuspend(RealCache.kt:109)
+	at io.github.reactivecircus.cache4k.RealCache$get$3.invoke(RealCache.kt)
+	at io.github.reactivecircus.cache4k.RealCache$get$3.invoke(RealCache.kt)
+	at io.github.reactivecircus.cache4k.KeyedSynchronizer.synchronizedFor(KeyedSynchronizer.kt:24)
+	at io.github.reactivecircus.cache4k.RealCache.get(RealCache.kt:98)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.fetchServerMappingFile(WebInterfaceManager.kt:616)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.getLatestCompatibleVersion(WebInterfaceManager.kt:643)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$getLatestCompatibleVersion(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$fallbackToDefaultWebUI$1.invokeSuspend(WebInterfaceManager.kt:412)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$fallbackToDefaultWebUI$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$fallbackToDefaultWebUI$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$doDownload$1.invokeSuspend(WebInterfaceManager.kt:403)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$doDownload$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$doDownload$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.doInitialSetup(WebInterfaceManager.kt:412)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.doInitialSetup$default(WebInterfaceManager.kt:387)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.setupWebUI(WebInterfaceManager.kt:373)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$setup$3.invokeSuspend(WebInterfaceManager.kt:198)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:37:49.630 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+2026-05-01 22:37:49.656 [main] INFO  io.javalin.Javalin - 
+       __                  ___           _____
+      / /___ __   ______ _/ (_)___      / ___/
+ __  / / __ `/ | / / __ `/ / / __ \    / __ \
+/ /_/ / /_/ /| |/ / /_/ / / / / / /   / /_/ /
+\____/\__,_/ |___/\__,_/_/_/_/ /_/    \____/
+
+       https://javalin.io/documentation
+
+2026-05-01 22:37:49.657 [main] INFO  io.javalin.Javalin - Javalin started in 67ms \o/
+2026-05-01 22:37:49.662 [main] INFO  io.javalin.Javalin - Static file handler added: StaticFileConfig(hostedPath=/, directory=/tmp/Tachidesk/webUI-serve, location=EXTERNAL, precompress=false, aliasCheck=org.eclipse.jetty.server.handler.ContextHandler$ApproveAliases@4e7151b3, headers={Cache-Control=max-age=0}, mimeTypes={}, roles=[]). File system location: '/tmp/Tachidesk/webUI-serve'
+2026-05-01 22:37:49.664 [main] INFO  io.javalin.Javalin - Listening on http://0.0.0.0:4567/
+2026-05-01 22:37:49.668 [main] INFO  io.javalin.Javalin - You are running Javalin 6.7.0 (released June 22, 2025. Your Javalin version is 313 days old. Consider checking for a newer version.).
+2026-05-01 22:37:49.675 [main] ERROR suwayomi.tachidesk.server.util.Browser - openInBrowser: failed to launch browser due to
+java.io.IOException: Current OS and desktop configuration does not support `browseURL`
+	at dorkbox.desktop.Desktop.browseURL(Desktop.java:161)
+	at dorkbox.desktop.Desktop.browseURL(Desktop.java:122)
+	at suwayomi.tachidesk.server.util.Browser.openInBrowser(Browser.kt:40)
+	at suwayomi.tachidesk.server.JavalinSetup.javalinSetup$lambda$4$0(JavalinSetup.kt:225)
+	at io.javalin.event.EventManager.fireEvent(EventManager.kt:26)
+	at io.javalin.jetty.JettyServer.start(JettyServer.kt:131)
+	at io.javalin.Javalin.start(Javalin.java:136)
+	at suwayomi.tachidesk.server.JavalinSetup.javalinSetup(JavalinSetup.kt:275)
+	at suwayomi.tachidesk.MainKt.main(Main.kt:15)
+	at suwayomi.tachidesk.MainKt.main(Main.kt)
+2026-05-01 22:37:50.821 [DefaultDispatcher-worker-3] WARN  io.github.oshai.kotlinlogging.slf4j.internal.LocationAwareKLogger@7f77f6d8 fetchServerMappingFile(WebUI) - (retry 1/3) failed due to
+eu.kanade.tachiyomi.network.HttpException: HTTP error 404
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invokeSuspend(WebInterfaceManager.kt:624)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:569)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$executeWithRetry-myKFqkg(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$executeWithRetry$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:37:54.863 [DefaultDispatcher-worker-5] WARN  io.github.oshai.kotlinlogging.slf4j.internal.LocationAwareKLogger@7f77f6d8 fetchServerMappingFile(WebUI) - (retry 2/3) failed due to
+eu.kanade.tachiyomi.network.HttpException: HTTP error 404
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invokeSuspend(WebInterfaceManager.kt:624)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:569)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$executeWithRetry-myKFqkg(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$executeWithRetry$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:38:00.903 [DefaultDispatcher-worker-10] WARN  io.github.oshai.kotlinlogging.slf4j.internal.LocationAwareKLogger@7f77f6d8 fetchServerMappingFile(WebUI) - (retry 3/3) failed due to
+eu.kanade.tachiyomi.network.HttpException: HTTP error 404
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invokeSuspend(WebInterfaceManager.kt:624)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:569)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$executeWithRetry-myKFqkg(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$executeWithRetry$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:38:00.904 [DefaultDispatcher-worker-10] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager doInitialSetup(flavor= WebUI) - fallback to bundled default webUI "WebUI"
+2026-05-01 22:38:00.905 [DefaultDispatcher-worker-10] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager - setupBundledWebUI: fallback to downloading the version of the bundled webUI
+suwayomi.tachidesk.server.util.BundledWebUIMissing: No bundled webUI version found
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.extractBundledWebUI(WebInterfaceManager.kt:451)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.setupBundledWebUI(WebInterfaceManager.kt:439)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.doInitialSetup(WebInterfaceManager.kt:431)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$doInitialSetup(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:38:00.907 [DefaultDispatcher-worker-10] INFO  suwayomi.tachidesk.server.util.WebInterfaceManager downloadVersion(version= r2643, flavor= WebUI) - Downloading WebUI zip from the Internet...
+2026-05-01 22:38:01.418 [DefaultDispatcher-worker-10] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager downloadVersion(version= r2643, flavor= WebUI) - (retry 0/3) failed due to
+java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getChainedException(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:779)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$downloadVersionZipFile(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invokeSuspend(WebInterfaceManager.kt:738)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersion(WebInterfaceManager.kt:737)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.setupBundledWebUI(WebInterfaceManager.kt:446)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.doInitialSetup(WebInterfaceManager.kt:431)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$doInitialSetup(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+Caused by: java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getHeaderField(Unknown Source)
+	at java.base/java.net.URLConnection.getHeaderFieldLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLengthLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLength(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getContentLength(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:777)
+	... 19 common frames omitted
+2026-05-01 22:38:03.738 [DefaultDispatcher-worker-1] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager downloadVersion(version= r2643, flavor= WebUI) - (retry 1/3) failed due to
+java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getChainedException(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:779)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$downloadVersionZipFile(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invokeSuspend(WebInterfaceManager.kt:738)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:569)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$executeWithRetry-myKFqkg(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$executeWithRetry$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+Caused by: java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getHeaderField(Unknown Source)
+	at java.base/java.net.URLConnection.getHeaderFieldLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLengthLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLength(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getContentLength(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:777)
+	... 17 common frames omitted
+2026-05-01 22:38:08.119 [DefaultDispatcher-worker-5] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager downloadVersion(version= r2643, flavor= WebUI) - (retry 2/3) failed due to
+java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getChainedException(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:779)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$downloadVersionZipFile(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invokeSuspend(WebInterfaceManager.kt:738)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:569)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$executeWithRetry-myKFqkg(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$executeWithRetry$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+Caused by: java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getHeaderField(Unknown Source)
+	at java.base/java.net.URLConnection.getHeaderFieldLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLengthLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLength(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getContentLength(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:777)
+	... 17 common frames omitted
+2026-05-01 22:38:14.439 [DefaultDispatcher-worker-1] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager downloadVersion(version= r2643, flavor= WebUI) - (retry 3/3) failed due to
+java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getChainedException(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:779)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$downloadVersionZipFile(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invokeSuspend(WebInterfaceManager.kt:738)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:569)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$executeWithRetry-myKFqkg(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$executeWithRetry$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+Caused by: java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getHeaderField(Unknown Source)
+	at java.base/java.net.URLConnection.getHeaderFieldLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLengthLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLength(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getContentLength(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:777)
+	... 17 common frames omitted
+2026-05-01 22:38:14.441 [DefaultDispatcher-worker-1] ERROR suwayomi.tachidesk.server.util.WebInterfaceManager setupWebUI(flavor= WebUI, servedFlavor= WebUI) - Failed to setup the webUI. Unable to start the server with a served webUI, change the settings to startwithout one. Stopping the server now...
+java.lang.Exception: Unable to setup a webUI
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.doInitialSetup(WebInterfaceManager.kt:433)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$doInitialSetup(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:38:14.445 [DefaultDispatcher-worker-1] INFO  suwayomi.tachidesk.server.util.AppExit - Shutting Down Suwayomi-Server. Goodbye! (reason= 3 (WebUISetupFailure))
+2026-05-01 22:38:14.447 [Thread-20] INFO  io.javalin.Javalin - Stopping Javalin ...
+2026-05-01 22:38:14.455 [Thread-20] INFO  io.javalin.Javalin - Javalin has stopped
+2026-05-01 22:38:15.600 [main] INFO  suwayomi.tachidesk.server.ServerSetup - Running Suwayomi-Server v2.1.0
+2026-05-01 22:38:15.704 [main] INFO  suwayomi.tachidesk.server.util.AppMutex - Mutex status is clear, Resuming startup.
+2026-05-01 22:38:15.735 [main] INFO  com.zaxxer.hikari.HikariDataSource - Suwayomi-DB-Pool - Starting...
+2026-05-01 22:38:15.812 [main] INFO  com.zaxxer.hikari.pool.HikariPool - Suwayomi-DB-Pool - Added connection conn0: url=jdbc:h2:/data/database user=
+2026-05-01 22:38:15.812 [main] INFO  com.zaxxer.hikari.HikariDataSource - Suwayomi-DB-Pool - Start completed.
+2026-05-01 22:38:15.827 [main] INFO  suwayomi.tachidesk.server.database.DBManager - Using H2 database version 1.4
+2026-05-01 22:38:15.884 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Running migrations on database jdbc:h2:/data/database
+2026-05-01 22:38:15.945 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Database version before migrations: 58
+2026-05-01 22:38:15.945 [main] INFO  de.neonew.exposed.migrations.RunMigrations - Migrations finished successfully
+2026-05-01 22:38:15.990 [DefaultDispatcher-worker-3] ERROR dorkbox.systemTray.SystemTray - Cannot use the SystemTray in a headless environment
+2026-05-01 22:38:15.990 [main] INFO  Migration - Running migrations, previous version 2, target version 2
+2026-05-01 22:38:15.990 [DefaultDispatcher-worker-3] ERROR suwayomi.tachidesk.server.util.SystemTray - create: failed to create SystemTray due to
+java.lang.NullPointerException: Cannot invoke "dorkbox.systemTray.SystemTray.getMenu()" because "systemTray" is null
+	at suwayomi.tachidesk.server.util.SystemTray.create(SystemTray.kt:41)
+	at suwayomi.tachidesk.server.ServerSetupKt$applicationSetup$19.invokeSuspend(ServerSetup.kt:431)
+	at suwayomi.tachidesk.server.ServerSetupKt$applicationSetup$19.invoke(ServerSetup.kt)
+	at suwayomi.tachidesk.server.ServerSetupKt$applicationSetup$19.invoke(ServerSetup.kt)
+	at suwayomi.tachidesk.server.ServerConfig$subscribeTo$2.invokeSuspend(ServerConfig.kt:1202)
+	at suwayomi.tachidesk.server.ServerConfig$subscribeTo$2.invoke(ServerConfig.kt)
+	at suwayomi.tachidesk.server.ServerConfig$subscribeTo$2.invoke(ServerConfig.kt)
+	at kotlinx.coroutines.flow.FlowKt__TransformKt$onEach$$inlined$unsafeTransform$1$2.emit(Emitters.kt:50)
+	at kotlinx.coroutines.flow.SharedFlowImpl.collect$suspendImpl(SharedFlow.kt:397)
+	at kotlinx.coroutines.flow.SharedFlowImpl$collect$1.invokeSuspend(SharedFlow.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:829)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:38:15.992 [main] INFO  Migration - Skipping migration version 1: InitialMigration
+2026-05-01 22:38:15.992 [main] INFO  Migration - Skipping migration version 2: FixGlobalUpdateScheduling
+2026-05-01 22:38:15.997 [DefaultDispatcher-worker-6] INFO  suwayomi.tachidesk.server.ServerSetup - Socks Proxy changed - enabled=false address=: , username=[REDACTED], password=[REDACTED]
+2026-05-01 22:38:16.119 [main] INFO  suwayomi.tachidesk.manga.impl.kindle.KindleSendWorker - Starting Kindle send worker
+2026-05-01 22:38:16.120 [main] INFO  KCEF - KCEF disabled via SUWAYOMI_DISABLE_KCEF=1
+2026-05-01 22:38:16.161 [DefaultDispatcher-worker-5] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager setupWebUI(flavor= WebUI, servedFlavor= WebUI) - no webUI files found, starting download...
+2026-05-01 22:38:16.439 [DefaultDispatcher-worker-5] WARN  io.github.oshai.kotlinlogging.slf4j.internal.LocationAwareKLogger@4666d2dc fetchServerMappingFile(WebUI) - (retry 0/3) failed due to
+eu.kanade.tachiyomi.network.HttpException: HTTP error 404
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invokeSuspend(WebInterfaceManager.kt:624)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2.invokeSuspend(WebInterfaceManager.kt:617)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2.invoke(WebInterfaceManager.kt)
+	at io.github.reactivecircus.cache4k.RealCache$get$3.invokeSuspend(RealCache.kt:109)
+	at io.github.reactivecircus.cache4k.RealCache$get$3.invoke(RealCache.kt)
+	at io.github.reactivecircus.cache4k.RealCache$get$3.invoke(RealCache.kt)
+	at io.github.reactivecircus.cache4k.KeyedSynchronizer.synchronizedFor(KeyedSynchronizer.kt:24)
+	at io.github.reactivecircus.cache4k.RealCache.get(RealCache.kt:98)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.fetchServerMappingFile(WebInterfaceManager.kt:616)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.getLatestCompatibleVersion(WebInterfaceManager.kt:643)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$getLatestCompatibleVersion(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$fallbackToDefaultWebUI$1.invokeSuspend(WebInterfaceManager.kt:412)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$fallbackToDefaultWebUI$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$fallbackToDefaultWebUI$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$doDownload$1.invokeSuspend(WebInterfaceManager.kt:403)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$doDownload$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$doDownload$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.doInitialSetup(WebInterfaceManager.kt:412)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.doInitialSetup$default(WebInterfaceManager.kt:387)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.setupWebUI(WebInterfaceManager.kt:373)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$setup$3.invokeSuspend(WebInterfaceManager.kt:198)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:38:17.168 [main] INFO  io.javalin.Javalin - Starting Javalin ...
+2026-05-01 22:38:17.193 [main] INFO  io.javalin.Javalin - 
+       __                  ___           _____
+      / /___ __   ______ _/ (_)___      / ___/
+ __  / / __ `/ | / / __ `/ / / __ \    / __ \
+/ /_/ / /_/ /| |/ / /_/ / / / / / /   / /_/ /
+\____/\__,_/ |___/\__,_/_/_/_/ /_/    \____/
+
+       https://javalin.io/documentation
+
+2026-05-01 22:38:17.193 [main] INFO  io.javalin.Javalin - Javalin started in 52ms \o/
+2026-05-01 22:38:17.198 [main] INFO  io.javalin.Javalin - Static file handler added: StaticFileConfig(hostedPath=/, directory=/tmp/Tachidesk/webUI-serve, location=EXTERNAL, precompress=false, aliasCheck=org.eclipse.jetty.server.handler.ContextHandler$ApproveAliases@54780c40, headers={Cache-Control=max-age=0}, mimeTypes={}, roles=[]). File system location: '/tmp/Tachidesk/webUI-serve'
+2026-05-01 22:38:17.201 [main] INFO  io.javalin.Javalin - Listening on http://0.0.0.0:4567/
+2026-05-01 22:38:17.205 [main] INFO  io.javalin.Javalin - You are running Javalin 6.7.0 (released June 22, 2025. Your Javalin version is 313 days old. Consider checking for a newer version.).
+2026-05-01 22:38:17.216 [main] ERROR suwayomi.tachidesk.server.util.Browser - openInBrowser: failed to launch browser due to
+java.io.IOException: Current OS and desktop configuration does not support `browseURL`
+	at dorkbox.desktop.Desktop.browseURL(Desktop.java:161)
+	at dorkbox.desktop.Desktop.browseURL(Desktop.java:122)
+	at suwayomi.tachidesk.server.util.Browser.openInBrowser(Browser.kt:40)
+	at suwayomi.tachidesk.server.JavalinSetup.javalinSetup$lambda$4$0(JavalinSetup.kt:225)
+	at io.javalin.event.EventManager.fireEvent(EventManager.kt:26)
+	at io.javalin.jetty.JettyServer.start(JettyServer.kt:131)
+	at io.javalin.Javalin.start(Javalin.java:136)
+	at suwayomi.tachidesk.server.JavalinSetup.javalinSetup(JavalinSetup.kt:275)
+	at suwayomi.tachidesk.MainKt.main(Main.kt:15)
+	at suwayomi.tachidesk.MainKt.main(Main.kt)
+2026-05-01 22:38:18.490 [DefaultDispatcher-worker-2] WARN  io.github.oshai.kotlinlogging.slf4j.internal.LocationAwareKLogger@4666d2dc fetchServerMappingFile(WebUI) - (retry 1/3) failed due to
+eu.kanade.tachiyomi.network.HttpException: HTTP error 404
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invokeSuspend(WebInterfaceManager.kt:624)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:569)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$executeWithRetry-myKFqkg(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$executeWithRetry$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:38:22.542 [DefaultDispatcher-worker-3] WARN  io.github.oshai.kotlinlogging.slf4j.internal.LocationAwareKLogger@4666d2dc fetchServerMappingFile(WebUI) - (retry 2/3) failed due to
+eu.kanade.tachiyomi.network.HttpException: HTTP error 404
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invokeSuspend(WebInterfaceManager.kt:624)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:569)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$executeWithRetry-myKFqkg(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$executeWithRetry$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:38:28.586 [DefaultDispatcher-worker-7] WARN  io.github.oshai.kotlinlogging.slf4j.internal.LocationAwareKLogger@4666d2dc fetchServerMappingFile(WebUI) - (retry 3/3) failed due to
+eu.kanade.tachiyomi.network.HttpException: HTTP error 404
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invokeSuspend(WebInterfaceManager.kt:624)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$fetchServerMappingFile$2$1.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:569)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$executeWithRetry-myKFqkg(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$executeWithRetry$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:38:28.588 [DefaultDispatcher-worker-7] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager doInitialSetup(flavor= WebUI) - fallback to bundled default webUI "WebUI"
+2026-05-01 22:38:28.589 [DefaultDispatcher-worker-7] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager - setupBundledWebUI: fallback to downloading the version of the bundled webUI
+suwayomi.tachidesk.server.util.BundledWebUIMissing: No bundled webUI version found
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.extractBundledWebUI(WebInterfaceManager.kt:451)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.setupBundledWebUI(WebInterfaceManager.kt:439)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.doInitialSetup(WebInterfaceManager.kt:431)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$doInitialSetup(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+2026-05-01 22:38:28.590 [DefaultDispatcher-worker-7] INFO  suwayomi.tachidesk.server.util.WebInterfaceManager downloadVersion(version= r2643, flavor= WebUI) - Downloading WebUI zip from the Internet...
+2026-05-01 22:38:28.929 [DefaultDispatcher-worker-7] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager downloadVersion(version= r2643, flavor= WebUI) - (retry 0/3) failed due to
+java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getChainedException(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:779)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$downloadVersionZipFile(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invokeSuspend(WebInterfaceManager.kt:738)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersion(WebInterfaceManager.kt:737)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.setupBundledWebUI(WebInterfaceManager.kt:446)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.doInitialSetup(WebInterfaceManager.kt:431)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$doInitialSetup(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$doInitialSetup$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+Caused by: java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getHeaderField(Unknown Source)
+	at java.base/java.net.URLConnection.getHeaderFieldLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLengthLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLength(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getContentLength(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:777)
+	... 19 common frames omitted
+2026-05-01 22:38:31.246 [DefaultDispatcher-worker-7] WARN  suwayomi.tachidesk.server.util.WebInterfaceManager downloadVersion(version= r2643, flavor= WebUI) - (retry 1/3) failed due to
+java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Unknown Source)
+	at java.base/java.lang.reflect.Constructor.newInstance(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection$10.run(Unknown Source)
+	at java.base/java.security.AccessController.doPrivileged(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getChainedException(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getInputStream(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:779)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$downloadVersionZipFile(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invokeSuspend(WebInterfaceManager.kt:738)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$downloadVersion$3.invoke(WebInterfaceManager.kt)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:563)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg$default(WebInterfaceManager.kt:555)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.executeWithRetry-myKFqkg(WebInterfaceManager.kt:569)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.access$executeWithRetry-myKFqkg(WebInterfaceManager.kt:82)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager$executeWithRetry$1.invokeSuspend(WebInterfaceManager.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)
+Caused by: java.io.FileNotFoundException: https://github.com/sebastianov92/Suwayomi-Enhanced-WebUI/releases/download/r2643/Suwayomi-WebUI-r2643.zip
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getHeaderField(Unknown Source)
+	at java.base/java.net.URLConnection.getHeaderFieldLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLengthLong(Unknown Source)
+	at java.base/java.net.URLConnection.getContentLength(Unknown Source)
+	at java.base/sun.net.www.protocol.https.HttpsURLConnectionImpl.getContentLength(Unknown Source)
+	at suwayomi.tachidesk.server.util.WebInterfaceManager.downloadVersionZipFile(WebInterfaceManager.kt:777)
+	... 17 common frames omitted

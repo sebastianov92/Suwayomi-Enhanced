@@ -7,7 +7,7 @@ services:
     container_name: suwayomi-enhanced
     restart: unless-stopped
     ports:
-      - "4567:4567"
+      - "4568:4567"
     environment:
       JAVA_OPTS: "-Xms256m -Xmx1g"
       SUWAYOMI_DISABLE_KCEF: "1"

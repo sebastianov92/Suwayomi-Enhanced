@@ -20,13 +20,11 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends tini ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
-RUN groupadd --system --gid 1000 suwayomi && \
-    useradd --system --uid 1000 --gid suwayomi --home /data suwayomi && \
-    mkdir -p /data && chown -R suwayomi:suwayomi /data
+RUN mkdir -p /data && chown -R 1000:1000 /data
 
 COPY --from=builder /src/server/build/Suwayomi-Server-*.jar /opt/suwayomi/server.jar
 
-USER suwayomi
+USER 1000:1000
 WORKDIR /data
 VOLUME ["/data"]
 EXPOSE 4567
