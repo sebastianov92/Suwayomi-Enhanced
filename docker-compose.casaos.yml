@@ -1,0 +1,49 @@
+name: suwayomi-enhanced
+services:
+  suwayomi:
+    image: ghcr.io/sebastianov92/suwayomi-enhanced:latest
+    container_name: suwayomi-enhanced
+    restart: unless-stopped
+    ports:
+      - target: 4567
+        published: "4567"
+        protocol: tcp
+    environment:
+      JAVA_OPTS: "-Xms256m -Xmx1g"
+      SUWAYOMI_DISABLE_KCEF: "1"
+      TZ: "America/Guayaquil"
+    volumes:
+      - type: bind
+        source: /DATA/AppData/suwayomi-enhanced/data
+        target: /data
+    x-casaos:
+      author: sebastianov92
+      category: Reading
+      description:
+        en_us: Self-hosted manga reader server (Suwayomi-Enhanced fork) with Kindle delivery, OPDS extras, metadata override, and more.
+      developer: sebastianov92
+      icon: https://raw.githubusercontent.com/Suwayomi/Suwayomi-Server/master/server/src/main/resources/icon/faviconlogo.png
+      tagline:
+        en_us: Manga server, Enhanced
+      title:
+        en_us: Suwayomi-Enhanced
+      port_map: "4567"
+x-casaos:
+  architectures:
+    - amd64
+    - arm64
+  main: suwayomi
+  description:
+    en_us: Self-hosted manga reader server (Suwayomi-Enhanced fork). Adds Send-to-Kindle, OPDS extensions, metadata override, scanlator aliases, AniList recommendations, Telegram push.
+  tagline:
+    en_us: Manga server, Enhanced
+  developer: sebastianov92
+  author: sebastianov92
+  icon: https://raw.githubusercontent.com/Suwayomi/Suwayomi-Server/master/server/src/main/resources/icon/faviconlogo.png
+  thumbnail: https://raw.githubusercontent.com/Suwayomi/Suwayomi-Server/master/server/src/main/resources/icon/faviconlogo.png
+  title:
+    en_us: Suwayomi-Enhanced
+  category: Reading
+  port_map: "4567"
+  scheme: http
+  index: /

@@ -44,7 +44,25 @@ docker compose up --build
 
 Exposes `http://localhost:4567`. Data persists in `./data`. Override JVM heap via `JAVA_OPTS` env (default `-Xms256m -Xmx1g`).
 
-The server fetches the WebUI bundle from `sebastianov92/Suwayomi-Enhanced-WebUI` GitHub releases on first boot — make sure that repo has at least one published release with `Suwayomi-WebUI-rXXX.zip`.
+The server fetches the WebUI bundle from `sebastianov92/Suwayomi-Enhanced-WebUI` GitHub releases on first boot — make sure that repo has at least one published release with `Suwayomi-WebUI-rXXX.zip` plus an `md5sum` asset.
+
+## CasaOS / pre-built image
+
+A multi-arch image (amd64 + arm64) is published to `ghcr.io/sebastianov92/suwayomi-enhanced:latest` on every push to `master`.
+
+For CasaOS, import [docker-compose.casaos.yml](docker-compose.casaos.yml) via *App Store → Custom Install → Import*. The compose includes CasaOS metadata (icon, category, port mapping) and binds `/DATA/AppData/suwayomi-enhanced/data` for persistence — adjust the source path for your setup.
+
+For plain `docker compose` without building locally, point your file at the published image:
+
+```yaml
+services:
+  suwayomi:
+    image: ghcr.io/sebastianov92/suwayomi-enhanced:latest
+    ports: ["4567:4567"]
+    volumes: ["./data:/data"]
+    environment:
+      SUWAYOMI_DISABLE_KCEF: "1"
+```
 
 ## Migrations added by this fork
 
