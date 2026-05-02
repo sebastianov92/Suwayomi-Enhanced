@@ -11,8 +11,10 @@ COPY AndroidCompat ./AndroidCompat
 COPY server ./server
 COPY scripts ./scripts
 
+ENV GRADLE_OPTS="-Dorg.gradle.jvmargs=-Xmx5g -XX:MaxMetaspaceSize=1g -Dkotlin.daemon.jvmargs=-Xmx5g"
+
 RUN --mount=type=cache,target=/root/.gradle \
-    ./gradlew --no-daemon :server:shadowJar
+    ./gradlew --no-daemon --max-workers=2 :server:shadowJar
 
 FROM eclipse-temurin:21-jre AS runtime
 
