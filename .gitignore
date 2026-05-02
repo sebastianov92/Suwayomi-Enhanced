@@ -21,3 +21,6 @@ scripts/zulu*
 scripts/electron-*
 scripts/rcedit-*
 scripts/resources/*.so
+
+# Docker compose runtime data
+/data/
