@@ -23,46 +23,32 @@ data class UpdateDataClass(
 )
 
 object AppUpdate {
-    private const val LATEST_STABLE_CHANNEL_URL = "https://api.github.com/repos/Suwayomi/Suwayomi-Server/releases/latest"
-    private const val LATEST_PREVIEW_CHANNEL_URL = "https://api.github.com/repos/Suwayomi/Suwayomi-Server-preview/releases/latest"
+    private const val LATEST_STABLE_CHANNEL_URL = "https://api.github.com/repos/sebastianov92/Suwayomi-Enhanced/releases/latest"
+    private const val LATEST_PREVIEW_CHANNEL_URL = "https://api.github.com/repos/sebastianov92/Suwayomi-Enhanced/releases/latest"
 
     private val json: Json by injectLazy()
     private val network: NetworkHelper by injectLazy()
 
-    suspend fun checkUpdate(): List<UpdateDataClass> {
-        val stableJson =
-            json
-                .parseToJsonElement(
-                    network.client
-                        .newCall(
-                            GET(LATEST_STABLE_CHANNEL_URL),
-                        ).await()
-                        .body
-                        .string(),
-                ).jsonObject
+    private suspend fun fetchLatest(
+        channel: String,
+        url: String,
+    ): UpdateDataClass? =
+        runCatching {
+            val body =
+                network.client
+                    .newCall(GET(url))
+                    .await()
+                    .body
+                    .string()
+            val obj = json.parseToJsonElement(body).jsonObject
+            val tag = obj["tag_name"]?.jsonPrimitive?.content ?: return@runCatching null
+            val html = obj["html_url"]?.jsonPrimitive?.content ?: return@runCatching null
+            UpdateDataClass(channel, tag, html)
+        }.getOrNull()
 
-        val previewJson =
-            json
-                .parseToJsonElement(
-                    network.client
-                        .newCall(
-                            GET(LATEST_PREVIEW_CHANNEL_URL),
-                        ).await()
-                        .body
-                        .string(),
-                ).jsonObject
-
-        return listOf(
-            UpdateDataClass(
-                "Stable",
-                stableJson["tag_name"]!!.jsonPrimitive.content,
-                stableJson["html_url"]!!.jsonPrimitive.content,
-            ),
-            UpdateDataClass(
-                "Preview",
-                previewJson["tag_name"]!!.jsonPrimitive.content,
-                previewJson["html_url"]!!.jsonPrimitive.content,
-            ),
+    suspend fun checkUpdate(): List<UpdateDataClass> =
+        listOfNotNull(
+            fetchLatest("Stable", LATEST_STABLE_CHANNEL_URL),
+            fetchLatest("Preview", LATEST_PREVIEW_CHANNEL_URL),
         )
-    }
 }
