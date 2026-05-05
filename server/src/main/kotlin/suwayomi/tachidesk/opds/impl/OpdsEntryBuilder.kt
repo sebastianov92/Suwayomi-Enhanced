@@ -132,22 +132,27 @@ object OpdsEntryBuilder {
         // N: add/remove from library action so the user can manage their
         // library straight from an OPDS reader (KOReader, Moon+, etc.)
         // when browsing source feeds.
+        // KOReader / Moon+ / Chunky ignore `text/html` alternates and
+        // sometimes throw "Cannot get catalog info from nil" on them.
+        // Emit the actions as OPDS subsection (atom+xml acquisition)
+        // instead — the controller does the action then 302s back to
+        // an actual atom feed, so the reader stays on a valid catalog.
         if (entry.inLibrary) {
             links.add(
                 OpdsLinkXml(
-                    rel = "alternate",
+                    rel = OpdsConstants.LINK_REL_SUBSECTION,
                     href = "$baseUrl/manga/${entry.id}/remove-from-library?lang=${locale.toLanguageTag()}",
-                    type = "text/html",
-                    title = "Remove from library",
+                    type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
+                    title = "✗ Remove from library",
                 ),
             )
         } else {
             links.add(
                 OpdsLinkXml(
-                    rel = "alternate",
+                    rel = OpdsConstants.LINK_REL_SUBSECTION,
                     href = "$baseUrl/manga/${entry.id}/add-to-library?lang=${locale.toLanguageTag()}",
-                    type = "text/html",
-                    title = "Add to library",
+                    type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
+                    title = "✚ Add to library",
                 ),
             )
         }
@@ -157,7 +162,9 @@ object OpdsEntryBuilder {
             id = "urn:suwayomi:manga:${entry.id}",
             title = entry.title,
             updated = OpdsDateUtil.formatEpochMillisForOpds(entry.lastFetchedAt * 1000),
-            authors = entry.author?.let { listOf(OpdsAuthorXml(name = it)) },
+            authors = entry.author
+                ?.takeIf { serverConfig.opdsIncludeAuthorInEntry.value }
+                ?.let { listOf(OpdsAuthorXml(name = it)) },
             categories =
                 entry.genres.filter { it.isNotBlank() }.map { genre ->
                     OpdsCategoryXml(
@@ -228,8 +235,10 @@ object OpdsEntryBuilder {
             updated = OpdsDateUtil.formatEpochMillisForOpds(chapter.uploadDate),
             authors =
                 listOfNotNull(
-                    manga.author?.let { OpdsAuthorXml(name = it) },
-                    chapter.scanlator?.takeIf { it.isNotBlank() }?.let { OpdsAuthorXml(name = it) },
+                    manga.author?.takeIf { serverConfig.opdsIncludeAuthorInEntry.value }?.let { OpdsAuthorXml(name = it) },
+                    chapter.scanlator
+                        ?.takeIf { it.isNotBlank() && serverConfig.opdsIncludeScanlatorAsAuthor.value }
+                        ?.let { OpdsAuthorXml(name = it) },
                 ),
             summary = OpdsSummaryXml(value = details),
             link =
@@ -257,9 +266,9 @@ object OpdsEntryBuilder {
                     )
                     add(
                         OpdsLinkXml(
-                            rel = "alternate",
+                            rel = OpdsConstants.LINK_REL_SUBSECTION,
                             href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/mark-read?read=${!chapter.read}&lang=${locale.toLanguageTag()}",
-                            type = "text/html",
+                            type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
                             title = if (chapter.read) "Mark unread" else "Mark read",
                         ),
                     )
@@ -267,9 +276,9 @@ object OpdsEntryBuilder {
                     // (sourceOrder >= this) as read in a single tap.
                     add(
                         OpdsLinkXml(
-                            rel = "alternate",
+                            rel = OpdsConstants.LINK_REL_SUBSECTION,
                             href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/mark-up-to?read=true&lang=${locale.toLanguageTag()}",
-                            type = "text/html",
+                            type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
                             title = "Mark this and older as read",
                         ),
                     )
@@ -521,8 +530,10 @@ object OpdsEntryBuilder {
             updated = OpdsDateUtil.formatEpochMillisForOpds(chapter.uploadDate),
             authors =
                 listOfNotNull(
-                    manga.author?.let { OpdsAuthorXml(name = it) },
-                    chapter.scanlator?.takeIf { it.isNotBlank() }?.let { OpdsAuthorXml(name = it) },
+                    manga.author?.takeIf { serverConfig.opdsIncludeAuthorInEntry.value }?.let { OpdsAuthorXml(name = it) },
+                    chapter.scanlator
+                        ?.takeIf { it.isNotBlank() && serverConfig.opdsIncludeScanlatorAsAuthor.value }
+                        ?.let { OpdsAuthorXml(name = it) },
                 ),
             summary = OpdsSummaryXml(value = details),
             link = links,

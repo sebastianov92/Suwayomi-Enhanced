@@ -585,6 +585,22 @@ class ServerConfig(
         typeInfo = SettingsRegistry.PartialTypeInfo(imports = listOf("org.jetbrains.exposed.sql.SortOrder")),
     )
 
+    val opdsIncludeAuthorInEntry: MutableStateFlow<Boolean> by BooleanSetting(
+        protoNumber = 224,
+        group = SettingGroup.OPDS,
+        privacySafe = true,
+        defaultValue = false,
+        description = "Emit the manga author as an OPDS author element. Some readers append it to the entry title.",
+    )
+
+    val opdsIncludeScanlatorAsAuthor: MutableStateFlow<Boolean> by BooleanSetting(
+        protoNumber = 225,
+        group = SettingGroup.OPDS,
+        privacySafe = true,
+        defaultValue = false,
+        description = "Emit the chapter scanlator as an additional OPDS author. Off avoids \"- Unknown\" suffixes appended by readers.",
+    )
+
     val authMode: MutableStateFlow<AuthMode> by EnumSetting(
         protoNumber = 56,
         group = SettingGroup.AUTH,

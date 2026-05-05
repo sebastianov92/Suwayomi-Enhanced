@@ -680,18 +680,23 @@ object OpdsFeedBuilder {
         // one tap. Listed before the actual chapters.
         val now = currentFormattedTime()
         val tag = locale.toLanguageTag()
+        // KOReader fails follow-up navigation on `text/html` alternates
+        // (returns "Cannot get catalog info from nil"). Use OPDS
+        // subsection links so the reader treats these as catalog
+        // navigation; the controller does the work then 302s back to
+        // the chapter list (atom+xml).
         builder.entries.add(
             OpdsEntryXml(
                 id = "urn:suwayomi:action:mark-series-read:$mangaId",
-                title = "★ Mark whole series as read",
+                title = "✓✓ Mark whole series as read",
                 updated = now,
                 content = OpdsContentXml(type = "text", value = "Sets every chapter of this series to read."),
                 link =
                     listOf(
                         OpdsLinkXml(
-                            rel = "alternate",
+                            rel = OpdsConstants.LINK_REL_SUBSECTION,
                             href = "$baseUrl/series/$mangaId/mark-all?read=true&lang=$tag",
-                            type = "text/html",
+                            type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
                             title = "Mark whole series as read",
                         ),
                     ),
@@ -700,15 +705,15 @@ object OpdsFeedBuilder {
         builder.entries.add(
             OpdsEntryXml(
                 id = "urn:suwayomi:action:mark-series-unread:$mangaId",
-                title = "☆ Mark whole series as unread",
+                title = "○○ Mark whole series as unread",
                 updated = now,
                 content = OpdsContentXml(type = "text", value = "Resets every chapter of this series to unread."),
                 link =
                     listOf(
                         OpdsLinkXml(
-                            rel = "alternate",
+                            rel = OpdsConstants.LINK_REL_SUBSECTION,
                             href = "$baseUrl/series/$mangaId/mark-all?read=false&lang=$tag",
-                            type = "text/html",
+                            type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
                             title = "Mark whole series as unread",
                         ),
                     ),
