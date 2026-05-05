@@ -23,6 +23,7 @@ object OpdsConstants {
     const val LINK_REL_START = "start"
     const val LINK_REL_SUBSECTION = "subsection"
     const val LINK_REL_ALTERNATE = "alternate"
+    const val LINK_REL_RELATED = "related"
     const val LINK_REL_FACET = "http://opds-spec.org/facet"
     const val LINK_REL_SEARCH = "search"
     const val LINK_REL_PREV = "previous"

@@ -129,33 +129,15 @@ object OpdsEntryBuilder {
             links.add(OpdsLinkXml(OpdsConstants.LINK_REL_IMAGE, it, OpdsConstants.TYPE_IMAGE_JPEG))
             links.add(OpdsLinkXml(OpdsConstants.LINK_REL_IMAGE_THUMBNAIL, it, OpdsConstants.TYPE_IMAGE_JPEG))
         }
-        // N: add/remove from library action so the user can manage their
-        // library straight from an OPDS reader (KOReader, Moon+, etc.)
-        // when browsing source feeds.
-        // KOReader / Moon+ / Chunky ignore `text/html` alternates and
-        // sometimes throw "Cannot get catalog info from nil" on them.
-        // Emit the actions as OPDS subsection (atom+xml acquisition)
-        // instead — the controller does the action then 302s back to
-        // an actual atom feed, so the reader stays on a valid catalog.
-        if (entry.inLibrary) {
-            links.add(
-                OpdsLinkXml(
-                    rel = OpdsConstants.LINK_REL_SUBSECTION,
-                    href = "$baseUrl/manga/${entry.id}/remove-from-library?lang=${locale.toLanguageTag()}",
-                    type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
-                    title = "✗ Remove from library",
-                ),
-            )
-        } else {
-            links.add(
-                OpdsLinkXml(
-                    rel = OpdsConstants.LINK_REL_SUBSECTION,
-                    href = "$baseUrl/manga/${entry.id}/add-to-library?lang=${locale.toLanguageTag()}",
-                    type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
-                    title = "✚ Add to library",
-                ),
-            )
-        }
+        // The add/remove-from-library actions used to live as extra
+        // OPDS links on the manga entry. KOReader / Moon+ pick the
+        // "last subsection acquisition" they see as the primary tap
+        // target, so emitting the remove-from-library link there made
+        // tapping a series accidentally remove it from the library.
+        // The actions are now exposed as synthetic entries at the top
+        // of the chapter-list feed (see OpdsFeedBuilder), so the only
+        // subsection link on the manga entry is the chapter list and
+        // tapping a series always takes you to the chapter list.
 
         val summaryText = buildMangaSummary(entry, locale)
         return OpdsEntryXml(
@@ -269,9 +251,16 @@ object OpdsEntryBuilder {
                             ),
                         )
                     }
+                    // The chapter metadata + mark-read + mark-up-to links
+                    // were previously emitted as `subsection`s, which made
+                    // some OPDS readers pick them as the primary tap target
+                    // for the whole chapter entry (e.g. tapping a chapter
+                    // would mark it read instead of opening it). They're
+                    // now `related` so they only show up in the entry's
+                    // action menu, never as the primary navigation.
                     add(
                         OpdsLinkXml(
-                            rel = OpdsConstants.LINK_REL_SUBSECTION,
+                            rel = OpdsConstants.LINK_REL_RELATED,
                             href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/metadata?lang=${locale.toLanguageTag()}",
                             type = OpdsConstants.TYPE_ATOM_XML_ENTRY_PROFILE_OPDS,
                             title = MR.strings.opds_linktitle_view_chapter_details.localized(locale),
@@ -279,7 +268,7 @@ object OpdsEntryBuilder {
                     )
                     add(
                         OpdsLinkXml(
-                            rel = OpdsConstants.LINK_REL_SUBSECTION,
+                            rel = OpdsConstants.LINK_REL_RELATED,
                             href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/mark-read?read=${!chapter.read}&lang=${locale.toLanguageTag()}",
                             type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
                             title = if (chapter.read) "Mark unread" else "Mark read",
@@ -289,7 +278,7 @@ object OpdsEntryBuilder {
                     // (sourceOrder >= this) as read in a single tap.
                     add(
                         OpdsLinkXml(
-                            rel = OpdsConstants.LINK_REL_SUBSECTION,
+                            rel = OpdsConstants.LINK_REL_RELATED,
                             href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/mark-up-to?read=true&lang=${locale.toLanguageTag()}",
                             type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
                             title = "Mark this and older as read",

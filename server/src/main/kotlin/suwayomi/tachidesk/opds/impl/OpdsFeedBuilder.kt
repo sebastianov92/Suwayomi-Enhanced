@@ -719,6 +719,54 @@ object OpdsFeedBuilder {
                     ),
             ),
         )
+        // N: add/remove from library exposed as a synthetic entry
+        // here (rather than as a link on the series acquisition entry)
+        // so tapping the series itself never accidentally hits this
+        // endpoint. The action's URN flips between add/remove based on
+        // the current MangaTable.inLibrary state.
+        val isInLibrary =
+            org.jetbrains.exposed.sql.transactions.transaction {
+                suwayomi.tachidesk.manga.model.table.MangaTable
+                    .select(suwayomi.tachidesk.manga.model.table.MangaTable.inLibrary)
+                    .where { suwayomi.tachidesk.manga.model.table.MangaTable.id eq mangaId }
+                    .firstOrNull()
+                    ?.get(suwayomi.tachidesk.manga.model.table.MangaTable.inLibrary) == true
+            }
+        if (isInLibrary) {
+            builder.entries.add(
+                OpdsEntryXml(
+                    id = "urn:suwayomi:action:remove-from-library:$mangaId",
+                    title = "✗ Remove from library",
+                    updated = now,
+                    content = OpdsContentXml(type = "text", value = "Removes this series from your Suwayomi library."),
+                    link = listOf(
+                        OpdsLinkXml(
+                            rel = OpdsConstants.LINK_REL_SUBSECTION,
+                            href = "$baseUrl/manga/$mangaId/remove-from-library?lang=$tag",
+                            type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
+                            title = "Remove from library",
+                        ),
+                    ),
+                ),
+            )
+        } else {
+            builder.entries.add(
+                OpdsEntryXml(
+                    id = "urn:suwayomi:action:add-to-library:$mangaId",
+                    title = "✚ Add to library",
+                    updated = now,
+                    content = OpdsContentXml(type = "text", value = "Adds this series to your Suwayomi library."),
+                    link = listOf(
+                        OpdsLinkXml(
+                            rel = OpdsConstants.LINK_REL_SUBSECTION,
+                            href = "$baseUrl/manga/$mangaId/add-to-library?lang=$tag",
+                            type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
+                            title = "Add to library",
+                        ),
+                    ),
+                ),
+            )
+        }
         builder.entries.addAll(
             chapterEntries.map { chapter ->
                 OpdsEntryBuilder.createChapterListEntry(chapter, mangaDetails, baseUrl, false, locale)
