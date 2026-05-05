@@ -1,0 +1,62 @@
+name: Release Jar (Enhanced)
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "buildSrc/**"
+      - "server/**"
+      - "AndroidCompat/**"
+      - "settings.gradle.kts"
+      - "build.gradle.kts"
+      - "gradle/**"
+      - "gradlew"
+      - ".github/workflows/release-jar.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: rev
+        run: |
+          count=$(git rev-list HEAD --count)
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+          echo "tag=v2.1.$count" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build shadowJar
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx5g -XX:MaxMetaspaceSize=1g -Dkotlin.daemon.jvmargs=-Xmx5g"
+        run: ./gradlew --no-daemon --max-workers=2 :server:shadowJar
+
+      - id: jarpath
+        run: |
+          path=$(ls server/build/Suwayomi-Server-*.jar | head -n1)
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "$path")" >> "$GITHUB_OUTPUT"
+
+      - name: Compute md5
+        run: |
+          md5sum "${{ steps.jarpath.outputs.path }}" | awk '{print $1}' > md5sum
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.rev.outputs.tag }}" \
+            "${{ steps.jarpath.outputs.path }}" md5sum \
+            --title "${{ steps.rev.outputs.tag }}" \
+            --notes "Automated release for ${{ steps.rev.outputs.tag }} (commit ${{ github.sha }})" \
+            --latest

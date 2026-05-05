@@ -43,6 +43,16 @@ for path in /data /data/downloads /data/local /data/backups; do
 done
 chown -R "${PUID}:${PGID}" /data 2>/dev/null || true
 
+# In-place server upgrade: if a previous run wrote /data/server-update.jar
+# (via the triggerServerUpdate GraphQL mutation), swap it in before
+# launching the JVM. Container restart policy (`unless-stopped`) brings
+# us back here after the mutation exits the JVM.
+if [ -f /data/server-update.jar ]; then
+    echo "entrypoint: applying queued server upgrade from /data/server-update.jar"
+    cp /opt/suwayomi/server.jar /data/server.jar.bak 2>/dev/null || true
+    mv /data/server-update.jar /opt/suwayomi/server.jar
+fi
+
 exec gosu "${PUID}:${PGID}" java $JAVA_OPTS \
     -Dsuwayomi.tachidesk.config.server.rootDir=/data \
     -jar /opt/suwayomi/server.jar

@@ -77,4 +77,37 @@ class InfoMutation {
                 }
             }
         }
+
+    data class ServerUpdatePayload(
+        val clientMutationId: String?,
+        val tag: String,
+        val downloaded: Boolean,
+    )
+
+    /**
+     * Pulls the latest jar from the fork's GitHub releases, drops it
+     * at /data/server-update.jar, then exits the JVM. The Docker
+     * entrypoint detects the queued jar on next boot, swaps it into
+     * /opt/suwayomi/server.jar, and the container's restart policy
+     * brings the upgraded server back up.
+     *
+     * Only applicable when the server runs inside the Suwayomi-Enhanced
+     * Docker image — bare-jar deployments don't have the entrypoint
+     * swap and would still need to relaunch manually.
+     */
+    @RequireAuth
+    fun triggerServerUpdate(input: WebUIUpdateInput): CompletableFuture<DataFetcherResult<ServerUpdatePayload?>> =
+        future {
+            asDataFetcherResult {
+                val (tag, _) =
+                    suwayomi.tachidesk.global.impl.AppUpdate.downloadLatestJarToDataRoot()
+                ServerUpdatePayload(input.clientMutationId, tag, downloaded = true)
+                    .also {
+                        // Schedule shutdown after the response goes out so the
+                        // mutation completes cleanly. Docker restart policy
+                        // brings us back up with the swapped jar.
+                        suwayomi.tachidesk.global.impl.AppUpdate.scheduleRestart()
+                    }
+            }
+        }
 }
