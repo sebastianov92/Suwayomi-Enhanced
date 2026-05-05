@@ -648,6 +648,39 @@ object OpdsV1Controller {
         )
 
     /**
+     * Enqueue a single chapter for download from an OPDS reader. Used
+     * for chapters that aren't yet on disk (typical when browsing an
+     * explore feed). The reader follows the link, the server enqueues
+     * the chapter, and we 302 back to the chapter list. Once the
+     * background download finishes, the entry exposes its CBZ
+     * acquisition link on the next refresh.
+     */
+    val enqueueChapterDownload =
+        handler(
+            pathParam<Int>("seriesId"),
+            pathParam<Int>("chapterIndex"),
+            queryParam<String?>("lang"),
+            documentWith = {
+                withOperation {
+                    summary("OPDS Enqueue Chapter Download")
+                    description("Adds the chapter to the download queue and redirects to the chapter list.")
+                }
+            },
+            behaviorOf = { ctx, seriesId, chapterIndex, lang ->
+                ctx.getAttribute(Attribute.TachideskUser).requireUserWithBasicFallback(ctx)
+                val locale: Locale = LocalizationHelper.ctxToLocale(ctx, lang)
+                runCatching {
+                    suwayomi.tachidesk.manga.impl.download.DownloadManager.enqueueWithChapterIndex(seriesId, chapterIndex)
+                }
+                ctx.redirect("/api/opds/v1.2/series/$seriesId/chapters?lang=${locale.toLanguageTag()}")
+            },
+            withResults = {
+                httpCode(HttpStatus.FOUND)
+                httpCode(HttpStatus.NOT_FOUND)
+            },
+        )
+
+    /**
      * Mark every chapter of a series read or unread (Suwayomi-Enhanced).
      */
     val markSeriesRead =

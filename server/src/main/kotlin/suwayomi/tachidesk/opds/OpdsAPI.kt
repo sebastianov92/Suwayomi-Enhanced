@@ -88,6 +88,12 @@ object OpdsAPI {
                 get(OpdsV1Controller.markSeriesUpTo)
             }
 
+            // Enqueue a chapter download from OPDS (typical for explore feeds
+            // where chapters haven't been pulled to disk yet)
+            path("series/{seriesId}/chapter/{chapterIndex}/enqueue-download") {
+                get(OpdsV1Controller.enqueueChapterDownload)
+            }
+
             // N: add/remove a manga to/from the user's library
             path("manga/{mangaId}/add-to-library") {
                 get(OpdsV1Controller.addMangaToLibrary)

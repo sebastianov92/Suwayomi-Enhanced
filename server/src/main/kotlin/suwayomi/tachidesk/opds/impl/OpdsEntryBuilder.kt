@@ -255,6 +255,19 @@ object OpdsEntryBuilder {
                                 title = MR.strings.opds_linktitle_download_cbz.localized(locale),
                             ),
                         )
+                    } else {
+                        // Not on disk yet — typical for explore feeds. Surface
+                        // a "queue download" action so the reader can trigger
+                        // the fetch with one tap; on next refresh the entry
+                        // will expose the direct CBZ acquisition link above.
+                        add(
+                            OpdsLinkXml(
+                                rel = OpdsConstants.LINK_REL_SUBSECTION,
+                                href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/enqueue-download?lang=${locale.toLanguageTag()}",
+                                type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
+                                title = "⬇ Queue download",
+                            ),
+                        )
                     }
                     add(
                         OpdsLinkXml(
