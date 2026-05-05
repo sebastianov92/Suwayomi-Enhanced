@@ -29,6 +29,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - id: rev
+        run: echo "count=$(git rev-list HEAD --count)" >> "$GITHUB_OUTPUT"
 
       - uses: docker/setup-qemu-action@v3
 
@@ -55,6 +60,8 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
+          build-args: |
+            SUWAYOMI_COMMIT_COUNT=${{ steps.rev.outputs.count }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha

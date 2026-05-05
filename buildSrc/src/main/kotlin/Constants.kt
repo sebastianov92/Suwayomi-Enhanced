@@ -15,19 +15,20 @@ val getTachideskVersion = { "v2.1.${getCommitCount()}" }
 val webUIRevisionTag = "r3134"
 
 private val getCommitCount = {
-    runCatching {
-        ProcessBuilder()
-            .command("git", "rev-list", "HEAD", "--count")
-            .start()
-            .let { process ->
-                process.waitFor()
-                val output = process.inputStream.use {
-                    it.bufferedReader().use(BufferedReader::readText)
+    System.getenv("SUWAYOMI_COMMIT_COUNT")?.takeIf { it.isNotBlank() }
+        ?: runCatching {
+            ProcessBuilder()
+                .command("git", "rev-list", "HEAD", "--count")
+                .start()
+                .let { process ->
+                    process.waitFor()
+                    val output = process.inputStream.use {
+                        it.bufferedReader().use(BufferedReader::readText)
+                    }
+                    process.destroy()
+                    output.trim()
                 }
-                process.destroy()
-                output.trim()
-            }
-    }.getOrDefault("0")
+        }.getOrDefault("0")
 }
 
 // counts commits on the current checked out branch

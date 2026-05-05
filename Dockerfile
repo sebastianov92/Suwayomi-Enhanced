@@ -3,6 +3,9 @@
 FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /src
 
+ARG SUWAYOMI_COMMIT_COUNT=0
+ENV SUWAYOMI_COMMIT_COUNT=${SUWAYOMI_COMMIT_COUNT}
+
 COPY gradle ./gradle
 COPY gradlew ./gradlew
 COPY settings.gradle.kts build.gradle.kts ./
