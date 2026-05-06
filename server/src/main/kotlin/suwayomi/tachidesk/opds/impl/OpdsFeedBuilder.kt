@@ -269,6 +269,88 @@ object OpdsFeedBuilder {
     }
 
     /**
+     * Generates an acquisition feed listing every known extension
+     * (installed and not), with one-tap install / uninstall actions.
+     * Useful for OPDS readers that want to manage extensions without
+     * opening the WebUI.
+     */
+    suspend fun getExtensionsFeed(
+        baseUrl: String,
+        pageNum: Int,
+        locale: Locale,
+    ): String {
+        // Refresh the extension list before serving so the feed
+        // includes new extensions the user hasn't manually pulled
+        // through the WebUI yet.
+        runCatching {
+            suwayomi.tachidesk.manga.impl.extension.ExtensionsList.fetchExtensionsCached()
+        }
+
+        val (extensions, total) = NavigationRepository.getAllExtensions(pageNum)
+        val builder =
+            FeedBuilderInternal(
+                baseUrl,
+                "extensions",
+                "Extensions",
+                locale,
+                OpdsConstants.TYPE_ATOM_XML_FEED_NAVIGATION,
+                pageNum,
+            )
+        builder.totalResults = total
+        val now = currentFormattedTime()
+        val tag = locale.toLanguageTag()
+        builder.entries.addAll(
+            extensions.map { ext ->
+                val statusLabel = buildString {
+                    if (ext.isInstalled) append("✓ ") else append("○ ")
+                    append(ext.name)
+                    append(" (")
+                    append(ext.lang.uppercase())
+                    append(")")
+                    if (ext.isNsfw) append(" 🔞")
+                    if (ext.hasUpdate) append(" ⬆")
+                    if (ext.isObsolete) append(" ⚠")
+                }
+                val actionRel = OpdsConstants.LINK_REL_SUBSECTION
+                val actionType = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION
+                val actionLink =
+                    if (ext.isInstalled) {
+                        OpdsLinkXml(
+                            rel = actionRel,
+                            href = "$baseUrl/extension/${ext.pkgName}/uninstall?lang=$tag",
+                            type = actionType,
+                            title = "Uninstall",
+                        )
+                    } else {
+                        OpdsLinkXml(
+                            rel = actionRel,
+                            href = "$baseUrl/extension/${ext.pkgName}/install?lang=$tag",
+                            type = actionType,
+                            title = "Install",
+                        )
+                    }
+                OpdsEntryXml(
+                    id = "urn:suwayomi:extension:${ext.pkgName}",
+                    title = statusLabel,
+                    updated = now,
+                    summary = OpdsSummaryXml(
+                        value = "v${ext.versionName} — tap to ${if (ext.isInstalled) "uninstall" else "install"}.",
+                    ),
+                    link = listOf(
+                        actionLink,
+                        OpdsLinkXml(
+                            rel = OpdsConstants.LINK_REL_IMAGE_THUMBNAIL,
+                            href = ext.iconUrl,
+                            type = OpdsConstants.TYPE_IMAGE_JPEG,
+                        ),
+                    ),
+                )
+            },
+        )
+        return OpdsXmlUtil.serializeFeedToString(builder.build())
+    }
+
+    /**
      * Generates a navigation feed listing sources for series present in the library.
      * @param baseUrl The base URL for constructing links.
      * @param pageNum The page number for pagination.

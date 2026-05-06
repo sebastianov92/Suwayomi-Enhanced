@@ -55,6 +55,15 @@ object OpdsAPI {
             // All Sources Navigation Feed (Explore)
             get("sources", OpdsV1Controller.exploreSourcesFeed)
 
+            // All Extensions feed + install/uninstall actions
+            get("extensions", OpdsV1Controller.extensionsFeed)
+            path("extension/{pkgName}/install") {
+                get(OpdsV1Controller.installExtensionAction)
+            }
+            path("extension/{pkgName}/uninstall") {
+                get(OpdsV1Controller.uninstallExtensionAction)
+            }
+
             // Source-Specific Series Acquisition Feed (Explore)
             path("source/{sourceId}") {
                 get(OpdsV1Controller.exploreSourceFeed)

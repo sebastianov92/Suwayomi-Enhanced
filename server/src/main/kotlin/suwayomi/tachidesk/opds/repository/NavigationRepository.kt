@@ -4,6 +4,7 @@ import dev.icerock.moko.resources.StringResource
 import org.jetbrains.exposed.sql.JoinType
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.alias
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.count
 import org.jetbrains.exposed.sql.countDistinct
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -20,6 +21,7 @@ import suwayomi.tachidesk.opds.dto.OpdsCategoryNavEntry
 import suwayomi.tachidesk.opds.dto.OpdsGenreNavEntry
 import suwayomi.tachidesk.opds.dto.OpdsLanguageNavEntry
 import suwayomi.tachidesk.opds.dto.OpdsRootNavEntry
+import suwayomi.tachidesk.opds.dto.OpdsExtensionEntry
 import suwayomi.tachidesk.opds.dto.OpdsSourceNavEntry
 import suwayomi.tachidesk.opds.dto.OpdsStatusNavEntry
 import suwayomi.tachidesk.opds.util.OpdsStringUtil.encodeForOpdsURL
@@ -125,7 +127,15 @@ object NavigationRepository {
                 description = "Library mangas sorted by the date you added them.",
                 linkType = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
             )
-        return libraryItems + otherRootItems + recentlyAdded
+        // Extensions browser — installed + uninstalled, with install/uninstall actions.
+        val extensions =
+            OpdsRootNavEntry(
+                id = "extensions",
+                title = "Extensions",
+                description = "Install or uninstall manga sources.",
+                linkType = OpdsConstants.TYPE_ATOM_XML_FEED_NAVIGATION,
+            )
+        return libraryItems + otherRootItems + recentlyAdded + extensions
     }
 
     fun getLibraryNavigationItems(locale: Locale): List<OpdsRootNavEntry> =
@@ -164,6 +174,34 @@ object NavigationRepository {
                         )
                     }
             Pair(sources, totalCount)
+        }
+
+    fun getAllExtensions(pageNum: Int): Pair<List<OpdsExtensionEntry>, Long> =
+        transaction {
+            val query =
+                ExtensionTable
+                    .selectAll()
+                    .orderBy(ExtensionTable.isInstalled to SortOrder.DESC, ExtensionTable.name to SortOrder.ASC)
+
+            val totalCount = query.count()
+            val extensions =
+                query
+                    .limit(opdsItemsPerPageBounded)
+                    .offset(((pageNum - 1) * opdsItemsPerPageBounded).toLong())
+                    .map {
+                        OpdsExtensionEntry(
+                            pkgName = it[ExtensionTable.pkgName],
+                            name = it[ExtensionTable.name],
+                            versionName = it[ExtensionTable.versionName],
+                            lang = it[ExtensionTable.lang],
+                            isNsfw = it[ExtensionTable.isNsfw],
+                            isInstalled = it[ExtensionTable.isInstalled],
+                            hasUpdate = it[ExtensionTable.hasUpdate],
+                            isObsolete = it[ExtensionTable.isObsolete],
+                            iconUrl = Extension.getExtensionIconUrl(it[ExtensionTable.apkName]),
+                        )
+                    }
+            Pair(extensions, totalCount)
         }
 
     fun getLibrarySources(pageNum: Int): Pair<List<OpdsSourceNavEntry>, Long> =

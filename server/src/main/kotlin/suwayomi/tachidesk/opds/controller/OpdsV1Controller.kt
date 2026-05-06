@@ -217,6 +217,91 @@ object OpdsV1Controller {
         )
 
     /**
+     * Serves a feed listing every known extension (installed and not)
+     * with one-tap install / uninstall links.
+     */
+    val extensionsFeed =
+        handler(
+            queryParam<Int?>("pageNumber"),
+            queryParam<String?>("lang"),
+            documentWith = {
+                withOperation {
+                    summary("OPDS Extensions Feed")
+                    description("Lists installed and available extensions with install/uninstall actions.")
+                }
+            },
+            behaviorOf = { ctx, pageNumber, lang ->
+                ctx.getAttribute(Attribute.TachideskUser).requireUserWithBasicFallback(ctx)
+                val locale: Locale = LocalizationHelper.ctxToLocale(ctx, lang)
+                ctx.future {
+                    future {
+                        OpdsFeedBuilder.getExtensionsFeed(BASE_URL, pageNumber ?: 1, locale)
+                    }.thenApply { xml ->
+                        ctx.contentType(OPDS_MIME).result(xml)
+                    }
+                }
+            },
+            withResults = { httpCode(HttpStatus.OK) },
+        )
+
+    /**
+     * Install an extension by package name from an OPDS reader.
+     * Triggers Extension.installExtension and 302s back to the
+     * extensions feed so the reader sees the new state.
+     */
+    val installExtensionAction =
+        handler(
+            pathParam<String>("pkgName"),
+            queryParam<String?>("lang"),
+            documentWith = {
+                withOperation {
+                    summary("OPDS Install Extension")
+                    description("Installs an extension by package name and redirects to the extensions feed.")
+                }
+            },
+            behaviorOf = { ctx, pkgName, lang ->
+                ctx.getAttribute(Attribute.TachideskUser).requireUserWithBasicFallback(ctx)
+                val locale: Locale = LocalizationHelper.ctxToLocale(ctx, lang)
+                ctx.future {
+                    future {
+                        runCatching { suwayomi.tachidesk.manga.impl.extension.Extension.installExtension(pkgName) }
+                    }.thenAccept {
+                        ctx.redirect("/api/opds/v1.2/extensions?lang=${locale.toLanguageTag()}")
+                    }
+                }
+            },
+            withResults = {
+                httpCode(HttpStatus.FOUND)
+                httpCode(HttpStatus.NOT_FOUND)
+            },
+        )
+
+    /**
+     * Uninstall an extension by package name from an OPDS reader.
+     */
+    val uninstallExtensionAction =
+        handler(
+            pathParam<String>("pkgName"),
+            queryParam<String?>("lang"),
+            documentWith = {
+                withOperation {
+                    summary("OPDS Uninstall Extension")
+                    description("Uninstalls an extension by package name and redirects to the extensions feed.")
+                }
+            },
+            behaviorOf = { ctx, pkgName, lang ->
+                ctx.getAttribute(Attribute.TachideskUser).requireUserWithBasicFallback(ctx)
+                val locale: Locale = LocalizationHelper.ctxToLocale(ctx, lang)
+                runCatching { suwayomi.tachidesk.manga.impl.extension.Extension.uninstallExtension(pkgName) }
+                ctx.redirect("/api/opds/v1.2/extensions?lang=${locale.toLanguageTag()}")
+            },
+            withResults = {
+                httpCode(HttpStatus.FOUND)
+                httpCode(HttpStatus.NOT_FOUND)
+            },
+        )
+
+    /**
      * Serves a navigation feed listing only the sources for series present in the library.
      */
     val librarySourcesFeed =
