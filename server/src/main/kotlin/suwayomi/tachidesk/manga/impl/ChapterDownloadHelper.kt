@@ -169,17 +169,30 @@ object ChapterDownloadHelper {
         }
         if (isReady()) return
 
-        suwayomi.tachidesk.manga.impl.download.DownloadManager
-            .enqueueWithChapterIndex(chapter.mangaId, chapter.index)
-
-        val timeoutMs = 5L * 60L * 1000L
+        // Retry the enqueue-and-poll loop a few times. Sources behind
+        // rate limiting / Cloudflare regularly bounce back with 400 or
+        // 429 on a single attempt; a fresh enqueue picks up where the
+        // failed one left off and usually succeeds. Three attempts at
+        // 90 s each keeps the worst case bounded but still gives slow
+        // sources room to finish.
+        val attempts = 3
+        val perAttemptMs = 90L * 1000L
         val pollIntervalMs = 1000L
-        val deadline = System.currentTimeMillis() + timeoutMs
-        while (System.currentTimeMillis() < deadline) {
-            if (isReady()) return
-            Thread.sleep(pollIntervalMs)
+        repeat(attempts) { attempt ->
+            suwayomi.tachidesk.manga.impl.download.DownloadManager
+                .enqueueWithChapterIndex(chapter.mangaId, chapter.index)
+
+            val deadline = System.currentTimeMillis() + perAttemptMs
+            while (System.currentTimeMillis() < deadline) {
+                if (isReady()) return
+                Thread.sleep(pollIntervalMs)
+            }
+            // Not ready yet — loop will re-enqueue (cheap if already in
+            // queue) and keep polling.
         }
-        throw IllegalStateException("Chapter ${chapter.id} did not finish downloading within timeout")
+        throw IllegalStateException(
+            "Chapter ${chapter.id} did not finish downloading after ${attempts * perAttemptMs / 1000}s",
+        )
     }
 
     fun getCbzMetadataForDownload(chapterId: Int): Pair<String, Long> { // fileName, fileSize

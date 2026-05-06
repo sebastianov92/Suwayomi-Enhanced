@@ -537,6 +537,26 @@ object MangaController {
                                 ctx.header("Content-Length", fileSize.toString())
                                 ctx.result(inputStream)
                             }
+                            .exceptionally { ex ->
+                                // Map the typical failure modes to OPDS-friendly status
+                                // codes so the reader shows a useful message instead of
+                                // an empty 400 / 500.
+                                val cause = ex.cause ?: ex
+                                val status = when (cause) {
+                                    is IllegalStateException ->
+                                        // ensureChapterOnDisk timed out — the source
+                                        // probably rate-limited us. 503 prompts retry-able
+                                        // behaviour in most OPDS clients.
+                                        HttpStatus.SERVICE_UNAVAILABLE
+                                    is IllegalArgumentException ->
+                                        HttpStatus.NOT_FOUND
+                                    else -> HttpStatus.INTERNAL_SERVER_ERROR
+                                }
+                                ctx.status(status)
+                                ctx.contentType("text/plain")
+                                ctx.result(cause.message ?: cause::class.java.simpleName)
+                                null
+                            }
                     }
                 }
             },
