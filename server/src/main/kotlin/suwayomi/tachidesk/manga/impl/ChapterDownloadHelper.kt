@@ -154,11 +154,22 @@ object ChapterDownloadHelper {
     }
 
     private fun ensureChapterOnDisk(chapter: ChapterDataClass) {
-        // Only treat the chapter as ready when ChapterTable.isDownloaded
-        // flips. The folder existing isn't enough because the downloader
-        // writes pages one-by-one — returning early there would race the
-        // archive build and ship a half-empty / unreadable CBZ.
-        val isReady = {
+        val cbzPath = File(getChapterCbzPath(chapter.mangaId, chapter.id))
+        val folderPath = File(getChapterDownloadPath(chapter.mangaId, chapter.id))
+
+        // Treat as ready only when:
+        //   1. ChapterTable.isDownloaded == true (downloader marked it).
+        //   2. There's actually something on disk (a CBZ with bytes, or a
+        //      folder with at least one image file).
+        // Both checks are needed because a stale isDownloaded flag from
+        // a previous partial run can race the actual files. Without the
+        // disk check, ensureChapterOnDisk would early-return and the
+        // provider would throw "CBZ file not found" / "Invalid folder".
+        val isPhysicallyOnDisk = {
+            (cbzPath.exists() && cbzPath.length() > 0L) ||
+                (folderPath.exists() && folderPath.listFiles()?.any { it.isFile } == true)
+        }
+        val isFlagged = {
             transaction {
                 ChapterTable
                     .select(ChapterTable.isDownloaded)
@@ -167,6 +178,7 @@ object ChapterDownloadHelper {
                     ?.get(ChapterTable.isDownloaded) == true
             }
         }
+        val isReady = { isFlagged() && isPhysicallyOnDisk() }
         if (isReady()) return
 
         // Retry the enqueue-and-poll loop a few times. Sources behind
@@ -178,7 +190,7 @@ object ChapterDownloadHelper {
         val attempts = 3
         val perAttemptMs = 90L * 1000L
         val pollIntervalMs = 1000L
-        repeat(attempts) { attempt ->
+        repeat(attempts) { _ ->
             suwayomi.tachidesk.manga.impl.download.DownloadManager
                 .enqueueWithChapterIndex(chapter.mangaId, chapter.index)
 
@@ -187,8 +199,6 @@ object ChapterDownloadHelper {
                 if (isReady()) return
                 Thread.sleep(pollIntervalMs)
             }
-            // Not ready yet — loop will re-enqueue (cheap if already in
-            // queue) and keep polling.
         }
         throw IllegalStateException(
             "Chapter ${chapter.id} did not finish downloading after ${attempts * perAttemptMs / 1000}s",
