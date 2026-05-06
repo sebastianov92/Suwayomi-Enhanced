@@ -215,19 +215,33 @@ object OpdsEntryBuilder {
             id = "urn:suwayomi:chapter:${chapter.id}",
             title = entryTitle,
             updated = OpdsDateUtil.formatEpochMillisForOpds(chapter.uploadDate),
-            authors =
-                listOfNotNull(
-                    manga.author?.takeIf { serverConfig.opdsIncludeAuthorInEntry.value }?.let { OpdsAuthorXml(name = it) },
-                    chapter.scanlator
-                        ?.takeIf { it.isNotBlank() && serverConfig.opdsIncludeScanlatorAsAuthor.value }
-                        ?.let { OpdsAuthorXml(name = it) },
-                ),
+            // Chapter entries don't expose authors. Some OPDS readers
+            // prepend the entry's author to the downloaded filename, so
+            // emitting the manga author / scanlator here led to files
+            // like "ODA Eiichiro - One Piece (Scan) - Chapter 1180.cbz"
+            // even with the toggles off. Authors stay on the manga
+            // entry only.
+            authors = emptyList(),
             summary = OpdsSummaryXml(value = details),
             link =
                 buildList {
-                    // Direct CBZ download so OPDS clients render the
-                    // chapter as a one-tap download instead of nesting
-                    // it under an extra "details" subfeed.
+                    // Primary tap target: chapter metadata subfeed. It
+                    // hosts the page-streaming link plus the CBZ/EPUB
+                    // acquisition links, and it works whether or not
+                    // the chapter has been downloaded yet.
+                    add(
+                        OpdsLinkXml(
+                            rel = OpdsConstants.LINK_REL_SUBSECTION,
+                            href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/metadata?lang=${locale.toLanguageTag()}",
+                            type = OpdsConstants.TYPE_ATOM_XML_ENTRY_PROFILE_OPDS,
+                            title = MR.strings.opds_linktitle_view_chapter_details.localized(locale),
+                        ),
+                    )
+                    // Direct CBZ acquisition for clients that prefer to
+                    // grab the file straight from the chapter list. Only
+                    // when the chapter is on disk; readers fall back to
+                    // the metadata subfeed (above) for downloads
+                    // otherwise.
                     if (chapter.downloaded) {
                         add(
                             OpdsLinkXml(
@@ -238,34 +252,15 @@ object OpdsEntryBuilder {
                             ),
                         )
                     } else {
-                        // Not on disk yet — typical for explore feeds. Surface
-                        // a "queue download" action so the reader can trigger
-                        // the fetch with one tap; on next refresh the entry
-                        // will expose the direct CBZ acquisition link above.
                         add(
                             OpdsLinkXml(
-                                rel = OpdsConstants.LINK_REL_SUBSECTION,
+                                rel = OpdsConstants.LINK_REL_RELATED,
                                 href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/enqueue-download?lang=${locale.toLanguageTag()}",
                                 type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
                                 title = "⬇ Queue download",
                             ),
                         )
                     }
-                    // The chapter metadata + mark-read + mark-up-to links
-                    // were previously emitted as `subsection`s, which made
-                    // some OPDS readers pick them as the primary tap target
-                    // for the whole chapter entry (e.g. tapping a chapter
-                    // would mark it read instead of opening it). They're
-                    // now `related` so they only show up in the entry's
-                    // action menu, never as the primary navigation.
-                    add(
-                        OpdsLinkXml(
-                            rel = OpdsConstants.LINK_REL_RELATED,
-                            href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/metadata?lang=${locale.toLanguageTag()}",
-                            type = OpdsConstants.TYPE_ATOM_XML_ENTRY_PROFILE_OPDS,
-                            title = MR.strings.opds_linktitle_view_chapter_details.localized(locale),
-                        ),
-                    )
                     add(
                         OpdsLinkXml(
                             rel = OpdsConstants.LINK_REL_RELATED,
@@ -530,13 +525,9 @@ object OpdsEntryBuilder {
             id = "urn:suwayomi:chapter:${chapter.id}:metadata$idSuffix",
             title = entryTitle,
             updated = OpdsDateUtil.formatEpochMillisForOpds(chapter.uploadDate),
-            authors =
-                listOfNotNull(
-                    manga.author?.takeIf { serverConfig.opdsIncludeAuthorInEntry.value }?.let { OpdsAuthorXml(name = it) },
-                    chapter.scanlator
-                        ?.takeIf { it.isNotBlank() && serverConfig.opdsIncludeScanlatorAsAuthor.value }
-                        ?.let { OpdsAuthorXml(name = it) },
-                ),
+            // Same reason as above: skip authors on chapter entries so
+            // OPDS readers don't prepend the manga author to file names.
+            authors = emptyList(),
             summary = OpdsSummaryXml(value = details),
             link = links,
             extent = cbzFileSize?.let { formatFileSizeForOpds(it) },
