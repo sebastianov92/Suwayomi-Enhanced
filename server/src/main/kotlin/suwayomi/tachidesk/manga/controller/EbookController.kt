@@ -69,6 +69,10 @@ object EbookController {
                 }
                 val (mangaId, mangaData, chapterName) = info
 
+                // Make sure the chapter is on disk first so OPDS readers
+                // can grab the EPUB on a not-yet-downloaded chapter.
+                runCatching { suwayomi.tachidesk.manga.impl.ChapterDownloadHelper.ensureChapterOnDiskById(chapterId) }
+
                 val pages =
                     runCatching { EpubBuilder.pagesFromChapter(mangaId, chapterId) }
                         .getOrElse {

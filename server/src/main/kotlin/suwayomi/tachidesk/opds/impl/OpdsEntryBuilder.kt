@@ -226,42 +226,57 @@ object OpdsEntryBuilder {
             summary = OpdsSummaryXml(value = details),
             link =
                 buildList {
-                    // Primary tap target: chapter metadata subfeed. It
-                    // hosts the page-streaming link plus the CBZ/EPUB
-                    // acquisition links, and it works whether or not
-                    // the chapter has been downloaded yet.
-                    add(
-                        OpdsLinkXml(
-                            rel = OpdsConstants.LINK_REL_SUBSECTION,
-                            href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/metadata?lang=${locale.toLanguageTag()}",
-                            type = OpdsConstants.TYPE_ATOM_XML_ENTRY_PROFILE_OPDS,
-                            title = MR.strings.opds_linktitle_view_chapter_details.localized(locale),
-                        ),
-                    )
-                    // Direct CBZ acquisition for clients that prefer to
-                    // grab the file straight from the chapter list. Only
-                    // when the chapter is on disk; readers fall back to
-                    // the metadata subfeed (above) for downloads
-                    // otherwise.
-                    if (chapter.downloaded) {
+                    // Page-streaming link first so OPDS readers list it
+                    // as the primary action in the entry's pop-up. The
+                    // server's image endpoint fetches images on-demand,
+                    // so streaming works whether the chapter is on disk
+                    // or not.
+                    if (chapter.pageCount > 0) {
                         add(
                             OpdsLinkXml(
-                                rel = OpdsConstants.LINK_REL_ACQUISITION_OPEN_ACCESS,
-                                href = "/api/v1/chapter/${chapter.id}/download?markAsRead=${serverConfig.opdsMarkAsReadOnDownload.value}",
-                                type = serverConfig.opdsCbzMimetype.value.mediaType,
-                                title = MR.strings.opds_linktitle_download_cbz.localized(locale),
+                                rel = OpdsConstants.LINK_REL_PSE_STREAM,
+                                href = "/api/v1/manga/${manga.id}/chapter/${chapter.sourceOrder}/page/{pageNumber}" +
+                                    "?updateProgress=${serverConfig.opdsEnablePageReadProgress.value}&opds=true",
+                                type = OpdsConstants.TYPE_IMAGE_JPEG,
+                                title = MR.strings.opds_linktitle_stream_pages_start.localized(locale),
+                                pseCount = chapter.pageCount,
+                                pseLastRead = chapter.lastPageRead.takeIf { it > 0 },
                             ),
                         )
-                    } else {
                         add(
                             OpdsLinkXml(
-                                rel = OpdsConstants.LINK_REL_RELATED,
-                                href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/enqueue-download?lang=${locale.toLanguageTag()}",
-                                type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
-                                title = "⬇ Queue download",
+                                rel = OpdsConstants.LINK_REL_IMAGE,
+                                href = "/api/v1/manga/${manga.id}/chapter/${chapter.sourceOrder}/page/0",
+                                type = OpdsConstants.TYPE_IMAGE_JPEG,
+                                title = MR.strings.opds_linktitle_chapter_cover.localized(locale),
                             ),
                         )
                     }
+                    // CBZ + EPUB acquisitions point at the
+                    // /api/v1/chapter/{id}/download[.epub] endpoints.
+                    // Server-side fetches the chapter on-demand if the
+                    // user picks one for a chapter that isn't on disk
+                    // yet, so the OPDS reader can offer both buttons
+                    // for every chapter.
+                    add(
+                        OpdsLinkXml(
+                            rel = OpdsConstants.LINK_REL_ACQUISITION_OPEN_ACCESS,
+                            href = "/api/v1/chapter/${chapter.id}/download?markAsRead=${serverConfig.opdsMarkAsReadOnDownload.value}",
+                            type = serverConfig.opdsCbzMimetype.value.mediaType,
+                            title = MR.strings.opds_linktitle_download_cbz.localized(locale),
+                        ),
+                    )
+                    add(
+                        OpdsLinkXml(
+                            rel = OpdsConstants.LINK_REL_ACQUISITION_OPEN_ACCESS,
+                            href = "/api/v1/chapter/${chapter.id}/download.epub",
+                            type = "application/epub+zip",
+                            title = "Download EPUB",
+                        ),
+                    )
+                    // Mark-read / mark-up-to stay on the entry as
+                    // related action links so they appear in the
+                    // pop-up but don't override the primary tap target.
                     add(
                         OpdsLinkXml(
                             rel = OpdsConstants.LINK_REL_RELATED,
@@ -270,8 +285,6 @@ object OpdsEntryBuilder {
                             title = if (chapter.read) "Mark unread" else "Mark read",
                         ),
                     )
-                    // C: catch-up — mark this chapter and every older one
-                    // (sourceOrder >= this) as read in a single tap.
                     add(
                         OpdsLinkXml(
                             rel = OpdsConstants.LINK_REL_RELATED,
@@ -280,18 +293,6 @@ object OpdsEntryBuilder {
                             title = "Mark this and older as read",
                         ),
                     )
-                    // F: also expose the EPUB acquisition link so OPDS
-                    // readers that prefer EPUB can grab it directly.
-                    if (chapter.downloaded) {
-                        add(
-                            OpdsLinkXml(
-                                rel = OpdsConstants.LINK_REL_ACQUISITION_OPEN_ACCESS,
-                                href = "/api/v1/chapter/${chapter.id}/download.epub",
-                                type = "application/epub+zip",
-                                title = "Download EPUB",
-                            ),
-                        )
-                    }
                 },
         )
     }

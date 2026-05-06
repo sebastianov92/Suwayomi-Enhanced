@@ -109,6 +109,11 @@ object ChapterDownloadHelper {
     ): Triple<InputStream, String, Long> {
         val (chapterData, fileName) = getChapterWithCbzFileName(chapterId)
 
+        // Ensure the chapter is on disk before streaming. Lets OPDS
+        // readers tap the CBZ acquisition link on a not-yet-downloaded
+        // chapter and have the server fetch + serve it on the fly.
+        ensureChapterOnDisk(chapterData)
+
         val cbzFile = provider(chapterData.mangaId, chapterData.id).getAsArchiveStream()
 
         if (markAsRead == true) {
@@ -123,6 +128,57 @@ object ChapterDownloadHelper {
         }
 
         return Triple(cbzFile.first, fileName, cbzFile.second)
+    }
+
+    /**
+     * Block (with timeout) until the chapter has been pulled to the
+     * download directory. If the chapter isn't downloaded yet, the
+     * function enqueues it and polls the ChapterTable until the row
+     * flips `isDownloaded = true`.
+     *
+     * Throws if the chapter still isn't on disk after the timeout.
+     */
+    fun ensureChapterOnDiskById(chapterId: Int) {
+        val chapter =
+            transaction {
+                val row =
+                    ChapterTable
+                        .selectAll()
+                        .where { ChapterTable.id eq chapterId }
+                        .firstOrNull() ?: throw IllegalArgumentException("ChapterId $chapterId not found")
+                ChapterTable.toDataClass(row)
+            }
+        ensureChapterOnDisk(chapter)
+    }
+
+    private fun ensureChapterOnDisk(chapter: ChapterDataClass) {
+        val cbzPath = File(getChapterCbzPath(chapter.mangaId, chapter.id))
+        val folderPath = File(getChapterDownloadPath(chapter.mangaId, chapter.id))
+        val isOnDisk = {
+            cbzPath.exists() ||
+                (folderPath.exists() && (folderPath.listFiles()?.isNotEmpty() == true))
+        }
+        if (isOnDisk()) return
+
+        suwayomi.tachidesk.manga.impl.download.DownloadManager
+            .enqueueWithChapterIndex(chapter.mangaId, chapter.index)
+
+        val timeoutMs = 5L * 60L * 1000L
+        val pollIntervalMs = 1000L
+        val deadline = System.currentTimeMillis() + timeoutMs
+        while (System.currentTimeMillis() < deadline) {
+            val downloaded =
+                transaction {
+                    ChapterTable
+                        .select(ChapterTable.isDownloaded)
+                        .where { ChapterTable.id eq chapter.id }
+                        .firstOrNull()
+                        ?.get(ChapterTable.isDownloaded) == true
+                }
+            if (downloaded || isOnDisk()) return
+            Thread.sleep(pollIntervalMs)
+        }
+        throw IllegalStateException("Chapter $chapter.id failed to download within timeout")
     }
 
     fun getCbzMetadataForDownload(chapterId: Int): Pair<String, Long> { // fileName, fileSize
