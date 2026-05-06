@@ -154,13 +154,20 @@ object ChapterDownloadHelper {
     }
 
     private fun ensureChapterOnDisk(chapter: ChapterDataClass) {
-        val cbzPath = File(getChapterCbzPath(chapter.mangaId, chapter.id))
-        val folderPath = File(getChapterDownloadPath(chapter.mangaId, chapter.id))
-        val isOnDisk = {
-            cbzPath.exists() ||
-                (folderPath.exists() && (folderPath.listFiles()?.isNotEmpty() == true))
+        // Only treat the chapter as ready when ChapterTable.isDownloaded
+        // flips. The folder existing isn't enough because the downloader
+        // writes pages one-by-one — returning early there would race the
+        // archive build and ship a half-empty / unreadable CBZ.
+        val isReady = {
+            transaction {
+                ChapterTable
+                    .select(ChapterTable.isDownloaded)
+                    .where { ChapterTable.id eq chapter.id }
+                    .firstOrNull()
+                    ?.get(ChapterTable.isDownloaded) == true
+            }
         }
-        if (isOnDisk()) return
+        if (isReady()) return
 
         suwayomi.tachidesk.manga.impl.download.DownloadManager
             .enqueueWithChapterIndex(chapter.mangaId, chapter.index)
@@ -169,18 +176,10 @@ object ChapterDownloadHelper {
         val pollIntervalMs = 1000L
         val deadline = System.currentTimeMillis() + timeoutMs
         while (System.currentTimeMillis() < deadline) {
-            val downloaded =
-                transaction {
-                    ChapterTable
-                        .select(ChapterTable.isDownloaded)
-                        .where { ChapterTable.id eq chapter.id }
-                        .firstOrNull()
-                        ?.get(ChapterTable.isDownloaded) == true
-                }
-            if (downloaded || isOnDisk()) return
+            if (isReady()) return
             Thread.sleep(pollIntervalMs)
         }
-        throw IllegalStateException("Chapter $chapter.id failed to download within timeout")
+        throw IllegalStateException("Chapter ${chapter.id} did not finish downloading within timeout")
     }
 
     fun getCbzMetadataForDownload(chapterId: Int): Pair<String, Long> { // fileName, fileSize

@@ -231,27 +231,34 @@ object OpdsEntryBuilder {
                     // server's image endpoint fetches images on-demand,
                     // so streaming works whether the chapter is on disk
                     // or not.
-                    if (chapter.pageCount > 0) {
-                        add(
-                            OpdsLinkXml(
-                                rel = OpdsConstants.LINK_REL_PSE_STREAM,
-                                href = "/api/v1/manga/${manga.id}/chapter/${chapter.sourceOrder}/page/{pageNumber}" +
-                                    "?updateProgress=${serverConfig.opdsEnablePageReadProgress.value}&opds=true",
-                                type = OpdsConstants.TYPE_IMAGE_JPEG,
-                                title = MR.strings.opds_linktitle_stream_pages_start.localized(locale),
-                                pseCount = chapter.pageCount,
-                                pseLastRead = chapter.lastPageRead.takeIf { it > 0 },
-                            ),
-                        )
-                        add(
-                            OpdsLinkXml(
-                                rel = OpdsConstants.LINK_REL_IMAGE,
-                                href = "/api/v1/manga/${manga.id}/chapter/${chapter.sourceOrder}/page/0",
-                                type = OpdsConstants.TYPE_IMAGE_JPEG,
-                                title = MR.strings.opds_linktitle_chapter_cover.localized(locale),
-                            ),
-                        )
-                    }
+                    //
+                    // Non-downloaded chapters from explore feeds usually
+                    // have pageCount=0 in the DB until fetchPageList
+                    // runs. Always emit the PSE link with at least 1 as
+                    // the count so OPDS readers show the Page Stream /
+                    // Stream From Page buttons; the server still walks
+                    // the real page list once the reader hits the first
+                    // page endpoint.
+                    val pseCountHint = chapter.pageCount.coerceAtLeast(1)
+                    add(
+                        OpdsLinkXml(
+                            rel = OpdsConstants.LINK_REL_PSE_STREAM,
+                            href = "/api/v1/manga/${manga.id}/chapter/${chapter.sourceOrder}/page/{pageNumber}" +
+                                "?updateProgress=${serverConfig.opdsEnablePageReadProgress.value}&opds=true",
+                            type = OpdsConstants.TYPE_IMAGE_JPEG,
+                            title = MR.strings.opds_linktitle_stream_pages_start.localized(locale),
+                            pseCount = pseCountHint,
+                            pseLastRead = chapter.lastPageRead.takeIf { it > 0 },
+                        ),
+                    )
+                    add(
+                        OpdsLinkXml(
+                            rel = OpdsConstants.LINK_REL_IMAGE,
+                            href = "/api/v1/manga/${manga.id}/chapter/${chapter.sourceOrder}/page/0",
+                            type = OpdsConstants.TYPE_IMAGE_JPEG,
+                            title = MR.strings.opds_linktitle_chapter_cover.localized(locale),
+                        ),
+                    )
                     // CBZ + EPUB acquisitions point at the
                     // /api/v1/chapter/{id}/download[.epub] endpoints.
                     // Server-side fetches the chapter on-demand if the
