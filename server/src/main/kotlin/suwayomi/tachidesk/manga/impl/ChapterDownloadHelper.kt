@@ -70,22 +70,33 @@ object ChapterDownloadHelper {
                     .where { ChapterTable.id eq chapterId }
                     .firstOrNull() ?: throw IllegalArgumentException("ChapterId $chapterId not found")
             val chapter = ChapterTable.toDataClass(row)
+            val override = MangaUserOverride.cachedOverride(chapter.mangaId)
             val mangaTitle =
-                MangaUserOverride
-                    .cachedOverride(chapter.mangaId)
+                override
                     ?.title
                     ?.takeIf { it.isNotBlank() }
                     ?: row[MangaTable.title]
+            val mangaAuthor =
+                (override?.author?.takeIf { it.isNotBlank() } ?: row[MangaTable.author])?.takeIf { it.isNotBlank() }
 
             // Match the on-disk download folder format used by DirName.getChapterDir:
-            //   "{Title} ({Scanlator}) - {Chapter}"
+            //   "[Author - ]{Title} ({Scanlator}) - {Chapter}"
             // and apply the user's scanlator alias mapping when one exists.
+            // The author prefix is opt-in via serverConfig.opdsIncludeAuthorInEntry
+            // so power users who want the full citation in the filename can have
+            // it without forcing it on everyone else.
             val resolvedScanlator = ScanlatorAlias.resolve(chapter.scanlator)
+            val authorPrefix =
+                if (suwayomi.tachidesk.server.serverConfig.opdsIncludeAuthorInEntry.value && !mangaAuthor.isNullOrBlank()) {
+                    "$mangaAuthor - "
+                } else {
+                    ""
+                }
             val baseName =
                 if (!resolvedScanlator.isNullOrBlank()) {
-                    "$mangaTitle ($resolvedScanlator) - ${chapter.name}"
+                    "$authorPrefix$mangaTitle ($resolvedScanlator) - ${chapter.name}"
                 } else {
-                    "$mangaTitle - ${chapter.name}"
+                    "$authorPrefix$mangaTitle - ${chapter.name}"
                 }
             val fileName = "$baseName.cbz"
 

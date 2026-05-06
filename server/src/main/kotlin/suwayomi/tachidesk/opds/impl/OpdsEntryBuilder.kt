@@ -215,13 +215,14 @@ object OpdsEntryBuilder {
             id = "urn:suwayomi:chapter:${chapter.id}",
             title = entryTitle,
             updated = OpdsDateUtil.formatEpochMillisForOpds(chapter.uploadDate),
-            // Chapter entries don't expose authors. Some OPDS readers
-            // prepend the entry's author to the downloaded filename, so
-            // emitting the manga author / scanlator here led to files
-            // like "ODA Eiichiro - One Piece (Scan) - Chapter 1180.cbz"
-            // even with the toggles off. Authors stay on the manga
-            // entry only.
-            authors = emptyList(),
+            // Authors on chapter entries are opt-in via the
+            // opdsIncludeAuthorInEntry server setting (default off).
+            // Some OPDS readers prepend the entry author to the
+            // downloaded filename, so leaving them off keeps file
+            // names clean by default.
+            authors = listOfNotNull(
+                manga.author?.takeIf { serverConfig.opdsIncludeAuthorInEntry.value }?.let { OpdsAuthorXml(name = it) },
+            ),
             summary = OpdsSummaryXml(value = details),
             link =
                 buildList {
@@ -446,17 +447,10 @@ object OpdsEntryBuilder {
                 OpdsLinkXml(OpdsConstants.LINK_REL_ALTERNATE, it, "text/html", MR.strings.opds_linktitle_view_on_web.localized(locale)),
             )
         }
-        if (chapter.downloaded) {
-            links.add(
-                OpdsLinkXml(
-                    OpdsConstants.LINK_REL_ACQUISITION_OPEN_ACCESS,
-                    "/api/v1/chapter/${chapter.id}/download?markAsRead=${serverConfig.opdsMarkAsReadOnDownload.value}",
-                    serverConfig.opdsCbzMimetype.value.mediaType,
-                    MR.strings.opds_linktitle_download_cbz.localized(locale),
-                    length = cbzFileSize,
-                ),
-            )
-        }
+        // PSE first so Kindle / KOReader / Moon+ that pick the
+        // first acquisition-style link as the primary action default
+        // to streaming the chapter (preferred reading flow). The CBZ
+        // / EPUB downloads come right after.
         if (chapter.pageCount > 0) {
             val basePageHref =
                 "/api/v1/manga/${manga.id}/chapter/${chapter.sourceOrder}/page/{pageNumber}" +
@@ -517,6 +511,32 @@ object OpdsEntryBuilder {
                     href = "/api/v1/manga/${manga.id}/chapter/${chapter.sourceOrder}/page/0",
                     type = OpdsConstants.TYPE_IMAGE_JPEG,
                     title = MR.strings.opds_linktitle_chapter_cover.localized(locale),
+                ),
+            )
+        }
+        // CBZ acquisition emitted after PSE so picky readers (Kindle's
+        // Calibre Companion fork etc.) don't hide the streaming link.
+        if (chapter.downloaded) {
+            links.add(
+                OpdsLinkXml(
+                    OpdsConstants.LINK_REL_ACQUISITION_OPEN_ACCESS,
+                    "/api/v1/chapter/${chapter.id}/download?markAsRead=${serverConfig.opdsMarkAsReadOnDownload.value}",
+                    serverConfig.opdsCbzMimetype.value.mediaType,
+                    MR.strings.opds_linktitle_download_cbz.localized(locale),
+                    length = cbzFileSize,
+                ),
+            )
+        } else {
+            // Non-downloaded chapter (typical explore browsing): expose
+            // the queue-download action so readers can fetch + download
+            // the CBZ later. The endpoint enqueues the download and
+            // 302s back to the chapter list.
+            links.add(
+                OpdsLinkXml(
+                    rel = OpdsConstants.LINK_REL_RELATED,
+                    href = "$baseUrl/series/${manga.id}/chapter/${chapter.sourceOrder}/enqueue-download?lang=${locale.toLanguageTag()}",
+                    type = OpdsConstants.TYPE_ATOM_XML_FEED_ACQUISITION,
+                    title = "⬇ Queue download",
                 ),
             )
         }
