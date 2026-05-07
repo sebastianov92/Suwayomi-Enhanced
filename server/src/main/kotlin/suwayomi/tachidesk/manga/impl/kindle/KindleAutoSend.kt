@@ -29,6 +29,10 @@ object KindleAutoSend {
         chapterIds: List<Int>,
     ) {
         if (chapterIds.isEmpty()) return
+        // SMTP off / "Disabled" preset means there's nowhere to send,
+        // so don't enqueue (would just pile up failing rows + fire
+        // notifications for never-sent emails).
+        if (serverConfig.smtpProvider.value.equals("NONE", ignoreCase = true)) return
         val cfg = MangaKindleConfig.get(mangaId)
         val effectiveAutoSend = cfg?.autoSend == true || serverConfig.kindleAutoSendEnabled.value
         if (!effectiveAutoSend) return

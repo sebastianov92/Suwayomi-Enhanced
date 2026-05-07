@@ -67,6 +67,12 @@ object KindleSendService {
         trigger: Trigger,
         destination: String? = null,
     ): Int? {
+        // Provider gate. Auto-enqueues from chapter fetch shouldn't
+        // create rows when SMTP is off; manual UI enqueue paths reach
+        // here too, so this is the canonical place to refuse.
+        if (serverConfig.smtpProvider.value.equals("NONE", ignoreCase = true)) {
+            return null
+        }
         val now = Instant.now().toEpochMilli()
         return transaction {
             // Skip if already queued and not finished.

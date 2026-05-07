@@ -34,6 +34,14 @@ object KindleSendWorker {
         scope.launch {
             while (isActive) {
                 try {
+                    // Hard gate: if the SMTP provider is "Disabled" / NONE,
+                    // don't pop or process anything. Pending rows stay in
+                    // the queue (visible in /kindle-queue) and resume the
+                    // moment the user picks a provider again.
+                    if (serverConfig.smtpProvider.value.equals("NONE", ignoreCase = true)) {
+                        delay(15_000L)
+                        continue
+                    }
                     val id = KindleSendService.reserveNext()
                     if (id != null) {
                         KindleSendService.process(id)
