@@ -8,11 +8,11 @@ package suwayomi.tachidesk.manga.impl.kindle
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.insertAndGetId
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.insertAndGetId
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.update
 import suwayomi.tachidesk.manga.model.dataclass.MangaKindleConfigDataClass
 import suwayomi.tachidesk.manga.model.table.MangaKindleConfigTable
 import suwayomi.tachidesk.server.serverConfig

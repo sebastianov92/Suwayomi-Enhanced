@@ -2,10 +2,10 @@ package suwayomi.tachidesk.opds.controller
 
 import io.javalin.http.Context
 import io.javalin.http.HttpStatus
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.greaterEq
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.jdbc.update
 import suwayomi.tachidesk.i18n.LocalizationHelper
 import suwayomi.tachidesk.i18n.MR
 import suwayomi.tachidesk.opds.constants.OpdsConstants
@@ -783,7 +783,7 @@ object OpdsV1Controller {
                 ctx.getAttribute(Attribute.TachideskUser).requireUserWithBasicFallback(ctx)
                 val locale: Locale = LocalizationHelper.ctxToLocale(ctx, lang)
                 val newRead = read ?: true
-                org.jetbrains.exposed.sql.transactions.transaction {
+                org.jetbrains.exposed.v1.jdbc.transactions.transaction {
                     val ct = suwayomi.tachidesk.manga.model.table.ChapterTable
                     ct.update({ ct.manga eq seriesId }) {
                         it[ct.isRead] = newRead
@@ -820,7 +820,7 @@ object OpdsV1Controller {
                 ctx.getAttribute(Attribute.TachideskUser).requireUserWithBasicFallback(ctx)
                 val locale: Locale = LocalizationHelper.ctxToLocale(ctx, lang)
                 val newRead = read ?: true
-                org.jetbrains.exposed.sql.transactions.transaction {
+                org.jetbrains.exposed.v1.jdbc.transactions.transaction {
                     val ct = suwayomi.tachidesk.manga.model.table.ChapterTable
                     ct.update({ (ct.manga eq seriesId) and (ct.sourceOrder greaterEq chapterIndex) }) {
                         it[ct.isRead] = newRead

@@ -10,9 +10,10 @@ import java.io.BufferedReader
 const val MainClass = "suwayomi.tachidesk.MainKt"
 
 // should be bumped with each stable release
-val getTachideskVersion = { "v2.1.${getCommitCount()}" }
+val getTachideskVersion = { "v2.2.${getCommitCount()}" }
 
-val webUIRevisionTag = "r3143"
+// Bumped to r3152 by the Enhanced fork. CI builds a fresh WebUI zip and bumps this on every release.
+val webUIRevisionTag = "r3152"
 
 private val getCommitCount = {
     System.getenv("SUWAYOMI_COMMIT_COUNT")?.takeIf { it.isNotBlank() }

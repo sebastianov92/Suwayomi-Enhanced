@@ -8,8 +8,8 @@ package suwayomi.tachidesk.manga.model.table
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.v1.core.ReferenceOption
+import org.jetbrains.exposed.v1.core.ResultRow
 import suwayomi.tachidesk.manga.model.dataclass.MangaUserOverrideDataClass
 
 object MangaUserOverrideTable : IntIdTable() {

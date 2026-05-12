@@ -1,7 +1,7 @@
 package suwayomi.tachidesk.opds.impl
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.jetbrains.exposed.sql.SortOrder
+import org.jetbrains.exposed.v1.core.SortOrder
 import suwayomi.tachidesk.i18n.MR
 import suwayomi.tachidesk.manga.impl.MangaList.proxyThumbnailUrl
 import suwayomi.tachidesk.manga.model.table.ChapterTable
@@ -808,7 +808,7 @@ object OpdsFeedBuilder {
         // endpoint. The action's URN flips between add/remove based on
         // the current MangaTable.inLibrary state.
         val isInLibrary =
-            org.jetbrains.exposed.sql.transactions.transaction {
+            org.jetbrains.exposed.v1.jdbc.transactions.transaction {
                 suwayomi.tachidesk.manga.model.table.MangaTable
                     .select(suwayomi.tachidesk.manga.model.table.MangaTable.inLibrary)
                     .where { suwayomi.tachidesk.manga.model.table.MangaTable.id eq mangaId }

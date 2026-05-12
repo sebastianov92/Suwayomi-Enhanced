@@ -9,8 +9,8 @@ package suwayomi.tachidesk.manga.controller
 
 import io.javalin.http.Context
 import io.javalin.http.HttpStatus
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import suwayomi.tachidesk.manga.impl.ebook.BulkArchiveBuilder
 import suwayomi.tachidesk.manga.impl.ebook.EpubBuilder
 import suwayomi.tachidesk.manga.model.table.ChapterTable

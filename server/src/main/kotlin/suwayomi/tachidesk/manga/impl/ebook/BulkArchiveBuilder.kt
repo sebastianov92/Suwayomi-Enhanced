@@ -8,8 +8,8 @@ package suwayomi.tachidesk.manga.impl.ebook
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import suwayomi.tachidesk.manga.impl.ChapterDownloadHelper
 import suwayomi.tachidesk.manga.model.table.ChapterTable
 import suwayomi.tachidesk.manga.model.table.MangaTable
