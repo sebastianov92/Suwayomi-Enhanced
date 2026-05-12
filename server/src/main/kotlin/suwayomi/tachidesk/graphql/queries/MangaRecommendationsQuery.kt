@@ -7,8 +7,6 @@
 
 package suwayomi.tachidesk.graphql.queries
 
-import graphql.execution.DataFetcherResult
-import suwayomi.tachidesk.graphql.asDataFetcherResult
 import suwayomi.tachidesk.graphql.directives.RequireAuth
 import suwayomi.tachidesk.manga.impl.MangaRecommendations
 import suwayomi.tachidesk.server.JavalinSetup.future
@@ -43,18 +41,18 @@ class MangaRecommendationsQuery {
         )
 
     @RequireAuth
-    fun mangaRecommendations(mangaId: Int): CompletableFuture<DataFetcherResult<List<RecommendationEntry>?>> =
+    fun mangaRecommendations(mangaId: Int): CompletableFuture<List<RecommendationEntry>?> =
         future {
-            asDataFetcherResult { MangaRecommendations.forManga(mangaId).map { it.toEntry() } }
+            run { MangaRecommendations.forManga(mangaId).map { it.toEntry() } }
         }
 
     @RequireAuth
     fun libraryRecommendations(
         perMangaLimit: Int? = null,
         totalLimit: Int? = null,
-    ): CompletableFuture<DataFetcherResult<List<RecommendationEntry>?>> =
+    ): CompletableFuture<List<RecommendationEntry>?> =
         future {
-            asDataFetcherResult {
+            run {
                 MangaRecommendations
                     .fromLibrary(
                         perMangaLimit = perMangaLimit?.coerceIn(1, 25) ?: 5,

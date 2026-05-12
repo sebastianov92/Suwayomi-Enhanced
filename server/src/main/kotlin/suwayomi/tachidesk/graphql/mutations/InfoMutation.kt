@@ -92,18 +92,16 @@ class InfoMutation {
      * swap and would still need to relaunch manually.
      */
     @RequireAuth
-    fun triggerServerUpdate(input: WebUIUpdateInput): CompletableFuture<DataFetcherResult<ServerUpdatePayload?>> =
+    fun triggerServerUpdate(input: WebUIUpdateInput): CompletableFuture<ServerUpdatePayload?> =
         future {
-            asDataFetcherResult {
-                val (tag, _) =
-                    suwayomi.tachidesk.global.impl.AppUpdate.downloadLatestJarToDataRoot()
-                ServerUpdatePayload(input.clientMutationId, tag, downloaded = true)
-                    .also {
-                        // Schedule shutdown after the response goes out so the
-                        // mutation completes cleanly. Docker restart policy
-                        // brings us back up with the swapped jar.
-                        suwayomi.tachidesk.global.impl.AppUpdate.scheduleRestart()
-                    }
-            }
+            val (tag, _) =
+                suwayomi.tachidesk.global.impl.AppUpdate.downloadLatestJarToDataRoot()
+            ServerUpdatePayload(input.clientMutationId, tag, downloaded = true)
+                .also {
+                    // Schedule shutdown after the response goes out so the
+                    // mutation completes cleanly. Docker restart policy
+                    // brings us back up with the swapped jar.
+                    suwayomi.tachidesk.global.impl.AppUpdate.scheduleRestart()
+                }
         }
 }

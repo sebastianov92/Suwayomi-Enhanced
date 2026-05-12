@@ -7,6 +7,8 @@ package suwayomi.tachidesk.manga.impl
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.core.neq
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.alias
 import org.jetbrains.exposed.v1.core.and

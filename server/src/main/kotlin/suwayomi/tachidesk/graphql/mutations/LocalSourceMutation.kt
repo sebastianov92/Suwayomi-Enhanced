@@ -7,8 +7,6 @@
 
 package suwayomi.tachidesk.graphql.mutations
 
-import graphql.execution.DataFetcherResult
-import suwayomi.tachidesk.graphql.asDataFetcherResult
 import suwayomi.tachidesk.graphql.directives.RequireAuth
 import suwayomi.tachidesk.manga.impl.LocalSourceTools
 import suwayomi.tachidesk.server.JavalinSetup.future
@@ -25,9 +23,9 @@ class LocalSourceMutation {
     )
 
     @RequireAuth
-    fun rescanLocalSource(input: RescanLocalSourceInput): CompletableFuture<DataFetcherResult<RescanLocalSourcePayload?>> =
+    fun rescanLocalSource(input: RescanLocalSourceInput): CompletableFuture<RescanLocalSourcePayload?> =
         future {
-            asDataFetcherResult {
+            run {
                 RescanLocalSourcePayload(input.clientMutationId, LocalSourceTools.rescan())
             }
         }

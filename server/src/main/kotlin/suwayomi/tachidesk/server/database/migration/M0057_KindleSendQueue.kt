@@ -8,7 +8,7 @@ package suwayomi.tachidesk.server.database.migration
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import de.neonew.exposed.migrations.helpers.AddTableMigration
-import org.jetbrains.exposed.dao.id.IntIdTable
+import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.core.ReferenceOption
 import org.jetbrains.exposed.v1.core.Table
 import suwayomi.tachidesk.manga.model.table.ChapterTable

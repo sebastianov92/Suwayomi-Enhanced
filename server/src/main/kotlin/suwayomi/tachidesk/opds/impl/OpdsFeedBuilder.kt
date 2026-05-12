@@ -1,5 +1,7 @@
 package suwayomi.tachidesk.opds.impl
 
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.core.eq
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.jetbrains.exposed.v1.core.SortOrder
 import suwayomi.tachidesk.i18n.MR

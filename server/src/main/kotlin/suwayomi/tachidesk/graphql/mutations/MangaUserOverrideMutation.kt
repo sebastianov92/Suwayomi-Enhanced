@@ -7,9 +7,7 @@
 
 package suwayomi.tachidesk.graphql.mutations
 
-import graphql.execution.DataFetcherResult
 import io.javalin.http.UploadedFile
-import suwayomi.tachidesk.graphql.asDataFetcherResult
 import suwayomi.tachidesk.graphql.directives.RequireAuth
 import suwayomi.tachidesk.graphql.types.MangaUserOverrideType
 import suwayomi.tachidesk.manga.impl.MangaUserOverride
@@ -38,8 +36,8 @@ class MangaUserOverrideMutation {
     )
 
     @RequireAuth
-    fun setMangaUserOverride(input: SetMangaUserOverrideInput): DataFetcherResult<SetMangaUserOverridePayload?> =
-        asDataFetcherResult {
+    fun setMangaUserOverride(input: SetMangaUserOverrideInput): SetMangaUserOverridePayload? =
+        run {
             val (clientMutationId, mangaId, patch) = input
             val saved =
                 MangaUserOverride.set(
@@ -67,8 +65,8 @@ class MangaUserOverrideMutation {
     )
 
     @RequireAuth
-    fun clearMangaUserOverride(input: ClearMangaUserOverrideInput): DataFetcherResult<ClearMangaUserOverridePayload?> =
-        asDataFetcherResult {
+    fun clearMangaUserOverride(input: ClearMangaUserOverrideInput): ClearMangaUserOverridePayload? =
+        run {
             val (clientMutationId, mangaId) = input
             ClearMangaUserOverridePayload(clientMutationId, MangaUserOverride.clear(mangaId))
         }
@@ -85,8 +83,8 @@ class MangaUserOverrideMutation {
     )
 
     @RequireAuth
-    fun setMangaCustomCover(input: SetMangaCustomCoverInput): DataFetcherResult<SetMangaCustomCoverPayload?> =
-        asDataFetcherResult {
+    fun setMangaCustomCover(input: SetMangaCustomCoverInput): SetMangaCustomCoverPayload? =
+        run {
             val (clientMutationId, mangaId, cover) = input
             val saved = MangaUserOverride.setCustomCover(mangaId, cover.content())
             SetMangaCustomCoverPayload(clientMutationId, MangaUserOverrideType(saved))
@@ -106,10 +104,10 @@ class MangaUserOverrideMutation {
     @RequireAuth
     fun setMangaCustomCoverFromUrl(
         input: SetMangaCustomCoverFromUrlInput,
-    ): CompletableFuture<DataFetcherResult<SetMangaCustomCoverFromUrlPayload?>> {
+    ): CompletableFuture<SetMangaCustomCoverFromUrlPayload?> {
         val (clientMutationId, mangaId, url) = input
         return future {
-            asDataFetcherResult {
+            run {
                 val saved = MangaUserOverride.setCustomCoverFromUrl(mangaId, url)
                 SetMangaCustomCoverFromUrlPayload(clientMutationId, MangaUserOverrideType(saved))
             }
@@ -127,8 +125,8 @@ class MangaUserOverrideMutation {
     )
 
     @RequireAuth
-    fun clearMangaCustomCover(input: ClearMangaCustomCoverInput): DataFetcherResult<ClearMangaCustomCoverPayload?> =
-        asDataFetcherResult {
+    fun clearMangaCustomCover(input: ClearMangaCustomCoverInput): ClearMangaCustomCoverPayload? =
+        run {
             val (clientMutationId, mangaId) = input
             ClearMangaCustomCoverPayload(clientMutationId, MangaUserOverride.clearCustomCover(mangaId))
         }

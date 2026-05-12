@@ -7,8 +7,6 @@
 
 package suwayomi.tachidesk.graphql.mutations
 
-import graphql.execution.DataFetcherResult
-import suwayomi.tachidesk.graphql.asDataFetcherResult
 import suwayomi.tachidesk.graphql.directives.RequireAuth
 import suwayomi.tachidesk.manga.impl.email.EmailSender
 import suwayomi.tachidesk.manga.impl.kindle.KindleSendService
@@ -30,8 +28,8 @@ class KindleMutation {
     )
 
     @RequireAuth
-    fun sendChapterToKindle(input: SendChapterToKindleInput): DataFetcherResult<SendChapterToKindlePayload?> =
-        asDataFetcherResult {
+    fun sendChapterToKindle(input: SendChapterToKindleInput): SendChapterToKindlePayload? =
+        run {
             val (cmid, chapterId, destination) = input
             val id =
                 KindleSendService.enqueue(
@@ -53,8 +51,8 @@ class KindleMutation {
     )
 
     @RequireAuth
-    fun cancelKindleQueueEntry(input: CancelKindleQueueEntryInput): DataFetcherResult<CancelKindleQueueEntryPayload?> =
-        asDataFetcherResult {
+    fun cancelKindleQueueEntry(input: CancelKindleQueueEntryInput): CancelKindleQueueEntryPayload? =
+        run {
             CancelKindleQueueEntryPayload(input.clientMutationId, KindleSendService.cancel(input.id))
         }
 
@@ -69,8 +67,8 @@ class KindleMutation {
     )
 
     @RequireAuth
-    fun retryKindleQueueEntry(input: RetryKindleQueueEntryInput): DataFetcherResult<RetryKindleQueueEntryPayload?> =
-        asDataFetcherResult {
+    fun retryKindleQueueEntry(input: RetryKindleQueueEntryInput): RetryKindleQueueEntryPayload? =
+        run {
             RetryKindleQueueEntryPayload(input.clientMutationId, KindleSendService.retry(input.id))
         }
 
@@ -89,8 +87,8 @@ class KindleMutation {
     )
 
     @RequireAuth
-    fun setMangaKindleConfig(input: SetMangaKindleConfigInput): DataFetcherResult<SetMangaKindleConfigPayload?> =
-        asDataFetcherResult {
+    fun setMangaKindleConfig(input: SetMangaKindleConfigInput): SetMangaKindleConfigPayload? =
+        run {
             val (cmid, mangaId, autoSend, destination) = input
             val saved = MangaKindleConfig.upsert(mangaId, autoSend, destination)
             SetMangaKindleConfigPayload(cmid, saved.mangaId, saved.autoSend, saved.destination)
@@ -108,8 +106,8 @@ class KindleMutation {
     )
 
     @RequireAuth
-    fun setSmtpPassword(input: SetSmtpPasswordInput): DataFetcherResult<SetSmtpPasswordPayload?> =
-        asDataFetcherResult {
+    fun setSmtpPassword(input: SetSmtpPasswordInput): SetSmtpPasswordPayload? =
+        run {
             // App passwords / SMTP credentials never legitimately contain
             // whitespace. Strip aggressively so paste-from-Google ('abcd efgh
             // ijkl mnop' grouped output) doesn't bite the user.
@@ -131,8 +129,8 @@ class KindleMutation {
     )
 
     @RequireAuth
-    fun sendTestEmail(input: SendTestEmailInput): DataFetcherResult<SendTestEmailPayload?> =
-        asDataFetcherResult {
+    fun sendTestEmail(input: SendTestEmailInput): SendTestEmailPayload? =
+        run {
             val to = input.destination?.takeIf { it.isNotBlank() } ?: serverConfig.kindleEmail.value
             require(to.isNotBlank()) { "No destination email" }
 

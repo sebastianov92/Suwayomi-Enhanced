@@ -7,6 +7,7 @@ package suwayomi.tachidesk.manga.controller
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import org.jetbrains.exposed.v1.core.eq
 import io.javalin.http.Context
 import io.javalin.http.HttpStatus
 import org.jetbrains.exposed.v1.jdbc.selectAll

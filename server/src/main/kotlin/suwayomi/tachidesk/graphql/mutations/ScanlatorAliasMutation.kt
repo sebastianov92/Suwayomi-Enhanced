@@ -7,8 +7,6 @@
 
 package suwayomi.tachidesk.graphql.mutations
 
-import graphql.execution.DataFetcherResult
-import suwayomi.tachidesk.graphql.asDataFetcherResult
 import suwayomi.tachidesk.graphql.directives.RequireAuth
 import suwayomi.tachidesk.graphql.types.ScanlatorAliasType
 import suwayomi.tachidesk.manga.impl.ScanlatorAlias
@@ -26,8 +24,8 @@ class ScanlatorAliasMutation {
     )
 
     @RequireAuth
-    fun createScanlatorAlias(input: CreateScanlatorAliasInput): DataFetcherResult<CreateScanlatorAliasPayload?> =
-        asDataFetcherResult {
+    fun createScanlatorAlias(input: CreateScanlatorAliasInput): CreateScanlatorAliasPayload? =
+        run {
             val (clientMutationId, scanlator, displayName) = input
             val created = ScanlatorAlias.create(scanlator, displayName)
             CreateScanlatorAliasPayload(clientMutationId, ScanlatorAliasType(created))
@@ -49,8 +47,8 @@ class ScanlatorAliasMutation {
     )
 
     @RequireAuth
-    fun updateScanlatorAlias(input: UpdateScanlatorAliasInput): DataFetcherResult<UpdateScanlatorAliasPayload?> =
-        asDataFetcherResult {
+    fun updateScanlatorAlias(input: UpdateScanlatorAliasInput): UpdateScanlatorAliasPayload? =
+        run {
             val (clientMutationId, id, patch) = input
             val updated = ScanlatorAlias.update(id, patch.displayName)
             UpdateScanlatorAliasPayload(clientMutationId, ScanlatorAliasType(updated))
@@ -67,8 +65,8 @@ class ScanlatorAliasMutation {
     )
 
     @RequireAuth
-    fun deleteScanlatorAlias(input: DeleteScanlatorAliasInput): DataFetcherResult<DeleteScanlatorAliasPayload?> =
-        asDataFetcherResult {
+    fun deleteScanlatorAlias(input: DeleteScanlatorAliasInput): DeleteScanlatorAliasPayload? =
+        run {
             val (clientMutationId, id) = input
             val deleted = ScanlatorAlias.delete(id)
             DeleteScanlatorAliasPayload(clientMutationId, deleted)

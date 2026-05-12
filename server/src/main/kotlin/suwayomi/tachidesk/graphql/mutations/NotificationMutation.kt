@@ -7,8 +7,6 @@
 
 package suwayomi.tachidesk.graphql.mutations
 
-import graphql.execution.DataFetcherResult
-import suwayomi.tachidesk.graphql.asDataFetcherResult
 import suwayomi.tachidesk.graphql.directives.RequireAuth
 import suwayomi.tachidesk.manga.impl.NotificationService
 import suwayomi.tachidesk.server.JavalinSetup.future
@@ -25,9 +23,9 @@ class NotificationMutation {
     )
 
     @RequireAuth
-    fun sendTestNotification(input: TestNotificationInput): CompletableFuture<DataFetcherResult<TestNotificationPayload?>> =
+    fun sendTestNotification(input: TestNotificationInput): CompletableFuture<TestNotificationPayload?> =
         future {
-            asDataFetcherResult {
+            run {
                 TestNotificationPayload(input.clientMutationId, NotificationService.sendTestMessage())
             }
         }
