@@ -13,7 +13,7 @@ import suwayomi.tachidesk.server.database.migration.helpers.toSqlName
 import suwayomi.tachidesk.server.serverConfig
 
 @Suppress("ClassName", "unused")
-class M0055_RenameMetaKeys : SQLMigration() {
+class M0059_RenameMetaKeys : SQLMigration() {
     fun postgresRename(table: String): String =
         "ALTER TABLE $table " +
             "RENAME COLUMN " + "KEY".toSqlName() + " TO META_KEY;"
