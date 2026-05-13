@@ -329,7 +329,10 @@ class ServerConfig(
         group = SettingGroup.LIBRARY_UPDATES,
         privacySafe = true,
         defaultValue = 12.hours.inWholeHours.toDouble(),
-        min = 6.0,
+        // Lowered from upstream's 6h floor to 1h so users can run more
+        // frequent library checks. Per-source rate limiters still gate
+        // actual outbound requests, so 1h is a safe minimum.
+        min = 1.0,
         description = "Time in hours",
     )
 
